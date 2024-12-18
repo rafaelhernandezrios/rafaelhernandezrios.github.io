@@ -2,7 +2,7 @@
   "name": "mi-portafolio",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://github.com/rafaelhernandezrios/rafaelhernandezrios.github.io",
+  "homepage": "https://github.com/rafaelhernandezrios",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.7.2",
     "@fortawesome/free-brands-svg-icons": "^6.7.2",
