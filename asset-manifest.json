@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/rafaelhernandezrios/rafaelhernandezrios.github.io/static/css/main.802793bf.css",
+    "main.js": "/rafaelhernandezrios/rafaelhernandezrios.github.io/static/js/main.5247ae5f.js",
+    "static/js/488.d070f4dc.chunk.js": "/rafaelhernandezrios/rafaelhernandezrios.github.io/static/js/488.d070f4dc.chunk.js",
+    "static/media/rafael.jpg": "/rafaelhernandezrios/rafaelhernandezrios.github.io/static/media/rafael.5384bd742432e2bbf559.jpg",
+    "index.html": "/rafaelhernandezrios/rafaelhernandezrios.github.io/index.html",
+    "main.802793bf.css.map": "/rafaelhernandezrios/rafaelhernandezrios.github.io/static/css/main.802793bf.css.map",
+    "main.5247ae5f.js.map": "/rafaelhernandezrios/rafaelhernandezrios.github.io/static/js/main.5247ae5f.js.map",
+    "488.d070f4dc.chunk.js.map": "/rafaelhernandezrios/rafaelhernandezrios.github.io/static/js/488.d070f4dc.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.802793bf.css",
+    "static/js/main.5247ae5f.js"
+  ]
+}
