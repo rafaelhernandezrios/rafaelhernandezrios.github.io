@@ -1,8 +1,16 @@
-// src/components/Navbar/Navbar.js
 import React, { useState } from 'react';
 import './Navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faTachometerAlt, faProjectDiagram, faTools, faEnvelope, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faUser, 
+  faTachometerAlt, 
+  faProjectDiagram, 
+  faTools, 
+  faEnvelope, 
+  faBars, 
+  faTimes, 
+  faAward 
+} from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -32,6 +40,7 @@ const Navbar = () => {
           <li><a href="#dashboard"><FontAwesomeIcon icon={faTachometerAlt} /> Dashboard</a></li>
           <li><a href="#projects"><FontAwesomeIcon icon={faProjectDiagram} /> Projects</a></li>
           <li><a href="#skills"><FontAwesomeIcon icon={faTools} /> Skills</a></li>
+          <li><a href="#highlights"><FontAwesomeIcon icon={faAward} /> Highlights</a></li>
           <li><a href="#contact"><FontAwesomeIcon icon={faEnvelope} /> Contact</a></li>
         </ul>
 
@@ -44,3 +53,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
