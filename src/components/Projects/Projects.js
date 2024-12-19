@@ -12,10 +12,10 @@ const projectsData = [
     link: "https://github.com/edgarhernandez94/EMGModelsPrediction"
   },
   {
-    title: "Teleoperation System",
+    title: "Pepper Remote Control Suite",
     icon: faWifi,
-    description: "Remote robot control with intuitive interfaces.",
-    link: "https://github.com/edgarhernandez94/Teleoperation_Robot_System"
+    description: "Pepper Control Dashboard is a versatile project that provides a web-based interface to remotely interact with and monitor the Pepper robot. It includes features such as live video streaming, movement control, text-to-speech commands, and remote Python code execution, all designed to enhance the robot's usability in research and development environments.",
+    link: "https://github.com/rafaelhernandezrios/PepperControlWeb"
   },
   {
     title: "Robot Image Recognition",
