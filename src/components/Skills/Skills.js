@@ -8,80 +8,90 @@ import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
 gsap.registerPlugin(ScrollTrigger);
 
 const skillsData = [
-    {
-      id: 1,
-      title: "Robotics",
-      progress: "90%",
-      details: [
-        { label: "Frameworks:", value: "ROS (Robot Operating System)" },
-        { label: "Libraries:", value: "MoveIt, OpenCV" },
-        { label: "Languages:", value: "Python, C++" },
-        { label: "Tools:", value: "RViz, Gazebo" },
-        { label: "Applications:", value: "Kinematics, SLAM (Hector SLAM, Gmapping)" }
-      ]
-    },
-    {
-      id: 2,
-      title: "AI Development",
-      progress: "85%",
-      details: [
-        { label: "Frameworks:", value: "TensorFlow, PyTorch" },
-        { label: "Libraries:", value: "NumPy, Pandas, Scikit-Learn" },
-        { label: "Languages:", value: "Python, R" },
-        { label: "Tools:", value: "Jupyter Notebook, VS Code" },
-        { label: "Applications:", value: "Machine Learning, Deep Learning, NLP" }
-      ]
-    },
-    {
-      id: 3,
-      title: "Web Development",
-      progress: "80%",
-      details: [
-        { label: "Frontend:", value: "React, HTML5, CSS3, JavaScript" },
-        { label: "Backend:", value: "Node.js, Express.js" },
-        { label: "Databases:", value: "MongoDB, MySQL" },
-        { label: "Tools:", value: "Git, Webpack, Babel" },
-        { label: "Others:", value: "RESTful APIs, GraphQL" }
-      ]
-    },
-    {
-      id: 4,
-      title: "Mobile Development",
-      progress: "75%",
-      details: [
-        { label: "Platforms:", value: "iOS, Android" },
-        { label: "Frameworks:", value: "React Native, Flutter" },
-        { label: "Languages:", value: "Swift, Kotlin, Dart" },
-        { label: "Tools:", value: "Xcode, Android Studio" },
-        { label: "Others:", value: "Firebase, Push Notifications" }
-      ]
-    },
-    {
-      id: 5,
-      title: "Data Analysis",
-      progress: "80%",
-      details: [
-        { label: "Tools:", value: "Excel, Tableau, Power BI" },
-        { label: "Languages:", value: "Python, SQL" },
-        { label: "Libraries:", value: "Pandas, Matplotlib, Seaborn" },
-        { label: "Techniques:", value: "Statistical Analysis, Data Cleaning" },
-        { label: "Others:", value: "Data Visualization, Reporting" }
-      ]
-    },
-    {
-      id: 6,
-      title: "Cloud Computing",
-      progress: "70%",
-      details: [
-        { label: "Platforms:", value: "AWS, Azure, Google Cloud" },
-        { label: "Services:", value: "EC2, S3, Lambda, Kubernetes" },
-        { label: "Tools:", value: "Docker, Terraform" },
-        { label: "Languages:", value: "Python, Bash" },
-        { label: "Others:", value: "CI/CD, Infrastructure as Code" }
-      ]
-    },
-    // Agrega más habilidades aquí siguiendo la misma estructura
-  ];
+  {
+    id: 1,
+    title: "Robotics",
+    progress: "95%",
+    details: [
+      { label: "Frameworks:", value: "ROS (Robot Operating System), MoveIt" },
+      { label: "Libraries:", value: "OpenCV" },
+      { label: "Languages:", value: "Python, C++" },
+      { label: "Tools:", value: "RViz, Gazebo, LiDAR integration, SLAM Tools (Hector SLAM, Gmapping)" },
+      { label: "Applications:", value: "Kinematics, Path Planning, Teleoperation Systems" }
+    ]
+  },
+  {
+    id: 2,
+    title: "AI Development",
+    progress: "90%",
+    details: [
+      { label: "Frameworks:", value: "TensorFlow, PyTorch" },
+      { label: "Libraries:", value: "Scikit-learn, NumPy, Pandas" },
+      { label: "Languages:", value: "Python" },
+      { label: "Tools:", value: "Jupyter Notebook, VS Code, GitHub" },
+      { label: "Applications:", value: "EEG/EMG classification, Machine Learning, Deep Learning, NLP" }
+    ]
+  },
+  {
+    id: 3,
+    title: "Web Development",
+    progress: "85%",
+    details: [
+      { label: "Frontend:", value: "React, HTML5, CSS3, JavaScript" },
+      { label: "Backend:", value: "Flask, Django, Node.js" },
+      { label: "Databases:", value: "MongoDB, MySQL" },
+      { label: "Tools:", value: "Git, GitHub, Webpack, Docker" },
+      { label: "Others:", value: "RESTful APIs, Deployment (Heroku, PythonAnywhere)" }
+    ]
+  },
+  {
+    id: 4,
+    title: "Data Analysis",
+    progress: "85%",
+    details: [
+      { label: "Tools:", value: "Excel, Tableau, Power BI, GitHub" },
+      { label: "Languages:", value: "Python, SQL" },
+      { label: "Libraries:", value: "Pandas, Matplotlib, Seaborn" },
+      { label: "Techniques:", value: "Statistical Analysis, Data Cleaning, Data Wrangling" },
+      { label: "Others:", value: "Data Visualization, Automated Reporting" }
+    ]
+  },
+  {
+    id: 5,
+    title: "Cloud Computing",
+    progress: "80%",
+    details: [
+      { label: "Platforms:", value: "Heroku, PythonAnywhere, AWS" },
+      { label: "Services:", value: "CI/CD Pipelines, Flask Deployment" },
+      { label: "Tools:", value: "Docker, Terraform, GitHub Actions" },
+      { label: "Languages:", value: "Python, Bash" },
+      { label: "Others:", value: "Infrastructure as Code, Scalable Deployments" }
+    ]
+  },
+  {
+    id: 6,
+    title: "Embedded Systems & Hardware",
+    progress: "90%",
+    details: [
+      { label: "Platforms:", value: "Arduino, ESP32, Raspberry Pi" },
+      { label: "Tools:", value: "MATLAB, PySerial, Socket Programming" },
+      { label: "Languages:", value: "C, Python" },
+      { label: "Microcontrollers:", value: "STM32, Atmega328, ESP32" },
+      { label: "Sensors:", value: "LiDAR, IMUs, Gas Sensors, Cameras, Ultrasonic Sensors" },
+      { label: "Applications:", value: "Data Acquisition, Control Systems, Real-Time Monitoring" }
+    ]
+  },
+  {
+    id: 7,
+    title: "Version Control & Collaboration",
+    progress: "95%",
+    details: [
+      { label: "Tools:", value: "Git, GitHub, GitLab" },
+      { label: "Applications:", value: "Version Control, Collaborative Development, Code Reviews" },
+      { label: "Best Practices:", value: "Branching Strategies, Pull Requests, Documentation" }
+    ]
+  }
+];
 
 const Skills = () => {
   const [activeSkill, setActiveSkill] = useState(null);

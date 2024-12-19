@@ -4,6 +4,7 @@ import './App.css';
 import Navbar from './components/Navbar/Navbar';
 import Hero from './components/Hero/Hero';
 import About from './components/About/About';
+import Highlights from './components/Highlights/Highlights';
 import Skills from './components/Skills/Skills';
 import Dashboard from './components/Dashboard/Dashboard';
 import Projects from './components/Projects/Projects';
@@ -61,9 +62,10 @@ function App() {
       <Navbar />
       <Hero />
       <About />
-      <Skills />
       <Dashboard />
+      <Highlights />
       <Projects />
+      <Skills />
       <Contact />
       <Footer />
     </div>
