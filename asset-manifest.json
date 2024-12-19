@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.fe93295f.css",
-    "main.js": "/static/js/main.813406c2.js",
+    "main.js": "/static/js/main.b2b6e828.js",
     "static/js/488.d070f4dc.chunk.js": "/static/js/488.d070f4dc.chunk.js",
     "static/media/expo-dubai.jpg": "/static/media/expo-dubai.fc9617bea8b650cd219b.jpg",
     "static/media/ny-outstanding-presentation.jpg": "/static/media/ny-outstanding-presentation.84c9837d63b39f0cc127.jpg",
@@ -9,11 +9,11 @@
     "static/media/mexjapon-podcast.jpg": "/static/media/mexjapon-podcast.85f5ec307d68fe350361.jpg",
     "index.html": "/index.html",
     "main.fe93295f.css.map": "/static/css/main.fe93295f.css.map",
-    "main.813406c2.js.map": "/static/js/main.813406c2.js.map",
+    "main.b2b6e828.js.map": "/static/js/main.b2b6e828.js.map",
     "488.d070f4dc.chunk.js.map": "/static/js/488.d070f4dc.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.fe93295f.css",
-    "static/js/main.813406c2.js"
+    "static/js/main.b2b6e828.js"
   ]
 }
