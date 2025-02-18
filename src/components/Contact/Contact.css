@@ -1,0 +1,49 @@
+/* src/components/Contact/Contact.css */
+
+.contact-section {
+    background: #f1faee;
+    padding: 60px 20px;
+    color: #333333;
+  }
+  
+  .contact-section h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #1d3557;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-section p {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+  }
+  
+  .contact-list {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  
+  .contact-list li {
+    font-size: 1.1rem;
+  }
+  
+  .contact-list a {
+    color: #457b9d;
+    display: flex;
+    align-items: center;
+    transition: color 0.3s;
+  }
+  
+  .contact-list a:hover {
+    color: #1d3557;
+  }
+  
+  .contact-list a svg {
+    margin-right: 8px;
+    color: inherit; /* Asegura que el ícono herede el color del enlace */
+  }
+  
