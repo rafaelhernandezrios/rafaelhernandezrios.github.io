@@ -1,43 +1,48 @@
 // src/components/Dashboard/Dashboard.js
 import React from 'react';
 import './Dashboard.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faRobot, faBook, faUserGraduate, faBriefcase } from '@fortawesome/free-solid-svg-icons';
 
 const dashboardData = [
   {
-    icon: faRobot,
-    title: "Projects Completed",
-    description: "50+"
+    icon: 'fas fa-robot',
+    title: 'Projects Completed',
+    number: '50+',
+    label: 'Robotics & AI Projects'
   },
   {
-    icon: faBook,
-    title: "Publications",
-    description: "5+ International"
+    icon: 'fas fa-book',
+    title: 'Publications',
+    number: '5+',
+    label: 'International Papers'
   },
   {
-    icon: faUserGraduate,
-    title: "Students Mentored",
-    description: "100+"
+    icon: 'fas fa-user-graduate',
+    title: 'Students Mentored',
+    number: '100+',
+    label: 'Educational Programs'
   },
   {
-    icon: faBriefcase,
-    title: "Years of Experience",
-    description: "5+"
+    icon: 'fas fa-briefcase',
+    title: 'Years of Experience',
+    number: '5+',
+    label: 'Professional Experience'
   }
 ];
 
 const Dashboard = () => {
   return (
-    <section id="dashboard" className="section dashboard-section">
+    <section id="dashboard" className="dashboard-section">
       <div className="container">
         <h2>Dashboard</h2>
         <div className="dashboard-grid">
           {dashboardData.map((card, index) => (
-            <div key={index} className="card">
-              <FontAwesomeIcon icon={card.icon} />
-              <h3>{card.title}</h3>
-              <p>{card.description}</p>
+            <div key={index} className="dashboard-card">
+              <h3>
+                <i className={card.icon}></i>
+                {card.title}
+              </h3>
+              <div className="number">{card.number}</div>
+              <div className="label">{card.label}</div>
             </div>
           ))}
         </div>

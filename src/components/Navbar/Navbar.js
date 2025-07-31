@@ -1,20 +1,9 @@
 // src/components/Navbar/Navbar.js
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { 
-  faUser, 
-  faTachometerAlt, 
-  faProjectDiagram, 
-  faTools, 
-  faEnvelope, 
-  faBars, 
-  faTimes, 
-  faAward 
-} from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
-  const [isMobile, setIsMobile] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState('about');
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -29,29 +18,14 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const handleToggle = () => {
-    setIsMobile(!isMobile);
-    // Prevent body scroll when mobile menu is open
-    if (!isMobile) {
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = 'unset';
-    }
-  };
-
-  const closeMenu = () => {
-    setIsMobile(false);
-    document.body.style.overflow = 'unset';
-  };
-
   const handleNavClick = (section) => {
     setActiveSection(section);
-    closeMenu();
+    setIsMobileMenuOpen(false);
     
     // Smooth scroll to section
     const element = document.getElementById(section);
     if (element) {
-      const navbarHeight = 80; // Approximate navbar height
+      const navbarHeight = 80;
       const elementPosition = element.offsetTop - navbarHeight;
       window.scrollTo({
         top: elementPosition,
@@ -60,87 +34,80 @@ const Navbar = () => {
     }
   };
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
   return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`} aria-label="Navegación principal">
-      <div className="container">
-        <h1 className="logo hover-scale">Rafael Hernandez</h1>
+    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
+      <div className="navbar-container">
+        <a href="#about" className="navbar-brand" onClick={() => handleNavClick('about')}>
+          Rafael Hernandez
+        </a>
         
-        <div className={isMobile ? "overlay active" : "overlay"} onClick={closeMenu}></div>
-        
-        <ul 
-          className={
-            isMobile 
-              ? "nav-links-mobile nav-links-mobile-active" 
-              : "nav-links"
-          }
-        >
-          <li className="mobile-close">
-            <button aria-label="Cerrar menú" onClick={closeMenu}>
-              <FontAwesomeIcon icon={faTimes} />
-            </button>
-          </li>
-          <li>
+        <ul className={`navbar-nav ${isMobileMenuOpen ? 'open' : ''}`}>
+          <li className="nav-item">
             <a 
               href="#about" 
-              className={activeSection === 'about' ? 'active' : ''} 
+              className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}
               onClick={() => handleNavClick('about')}
             >
-              <FontAwesomeIcon icon={faUser} /> About
+              About
             </a>
           </li>
-          <li>
+          <li className="nav-item">
             <a 
               href="#dashboard" 
-              className={activeSection === 'dashboard' ? 'active' : ''} 
+              className={`nav-link ${activeSection === 'dashboard' ? 'active' : ''}`}
               onClick={() => handleNavClick('dashboard')}
             >
-              <FontAwesomeIcon icon={faTachometerAlt} /> Dashboard
+              Dashboard
             </a>
           </li>
-          <li>
+          <li className="nav-item">
             <a 
               href="#projects" 
-              className={activeSection === 'projects' ? 'active' : ''} 
+              className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`}
               onClick={() => handleNavClick('projects')}
             >
-              <FontAwesomeIcon icon={faProjectDiagram} /> Projects
+              Projects
             </a>
           </li>
-          <li>
+          <li className="nav-item">
             <a 
               href="#skills" 
-              className={activeSection === 'skills' ? 'active' : ''} 
+              className={`nav-link ${activeSection === 'skills' ? 'active' : ''}`}
               onClick={() => handleNavClick('skills')}
             >
-              <FontAwesomeIcon icon={faTools} /> Skills
+              Skills
             </a>
           </li>
-          <li>
+          <li className="nav-item">
             <a 
               href="#highlights" 
-              className={activeSection === 'highlights' ? 'active' : ''} 
+              className={`nav-link ${activeSection === 'highlights' ? 'active' : ''}`}
               onClick={() => handleNavClick('highlights')}
             >
-              <FontAwesomeIcon icon={faAward} /> Highlights
+              Highlights
             </a>
           </li>
-          <li>
+          <li className="nav-item">
             <a 
               href="#contact" 
-              className={activeSection === 'contact' ? 'active' : ''} 
+              className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}
               onClick={() => handleNavClick('contact')}
             >
-              <FontAwesomeIcon icon={faEnvelope} /> Contact
+              Contact
             </a>
           </li>
         </ul>
 
         <button 
-          className="mobile-menu-icon hover-scale" 
-          onClick={handleToggle} 
-          aria-label={isMobile ? "Cerrar menú" : "Abrir menú"}
+          className="mobile-menu-btn" 
+          onClick={toggleMobileMenu}
+          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
         >
-          <FontAwesomeIcon icon={isMobile ? faTimes : faBars} />
+          <i className={`fas fa-${isMobileMenuOpen ? 'times' : 'bars'}`}></i>
         </button>
       </div>
     </nav>

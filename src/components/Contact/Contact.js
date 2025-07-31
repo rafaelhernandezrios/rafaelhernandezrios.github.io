@@ -7,27 +7,25 @@ import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 const Contact = () => {
   return (
-    <section id="contact" className="section contact-section">
+    <section id="contact" className="contact-section">
       <div className="container">
         <h2>Contact Me</h2>
-        <p>Let's connect:</p>
-        <ul className="contact-list">
-          <li>
-            <a href="https://www.linkedin.com/in/rafaelhernandez94/" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faLinkedin} size="2x" /> LinkedIn
+        <div className="contact-content">
+          <div className="contact-info">
+            <p>Let's connect and discuss opportunities for collaboration in robotics, AI, and software development.</p>
+          </div>
+          <div className="contact-links">
+            <a href="https://www.linkedin.com/in/rafaelhernandez94/" target="_blank" rel="noopener noreferrer" className="contact-link">
+              <FontAwesomeIcon icon={faLinkedin} /> LinkedIn
             </a>
-          </li>
-          <li>
-            <a href="mailto:e.r.hdez94@gmail.com">
-              <FontAwesomeIcon icon={faEnvelope} size="2x" /> e.r.hdez94@gmail.com
+            <a href="mailto:e.r.hdez94@gmail.com" className="contact-link secondary">
+              <FontAwesomeIcon icon={faEnvelope} /> Email
             </a>
-          </li>
-          <li>
-            <a href="https://github.com/rafaelhernandezrios" target="_blank" rel="noopener noreferrer">
-              <FontAwesomeIcon icon={faGithub} size="2x" /> GitHub
+            <a href="https://github.com/rafaelhernandezrios" target="_blank" rel="noopener noreferrer" className="contact-link">
+              <FontAwesomeIcon icon={faGithub} /> GitHub
             </a>
-          </li>
-        </ul>
+          </div>
+        </div>
       </div>
     </section>
   );
