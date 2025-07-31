@@ -2,7 +2,16 @@
 import React, { useState, useEffect } from 'react';
 import './Navbar.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser, faTachometerAlt, faProjectDiagram, faTools, faEnvelope, faBars, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { 
+  faUser, 
+  faTachometerAlt, 
+  faProjectDiagram, 
+  faTools, 
+  faEnvelope, 
+  faBars, 
+  faTimes, 
+  faAward 
+} from '@fortawesome/free-solid-svg-icons';
 
 const Navbar = () => {
   const [isMobile, setIsMobile] = useState(false);
@@ -108,6 +117,15 @@ const Navbar = () => {
           </li>
           <li>
             <a 
+              href="#highlights" 
+              className={activeSection === 'highlights' ? 'active' : ''} 
+              onClick={() => handleNavClick('highlights')}
+            >
+              <FontAwesomeIcon icon={faAward} /> Highlights
+            </a>
+          </li>
+          <li>
+            <a 
               href="#contact" 
               className={activeSection === 'contact' ? 'active' : ''} 
               onClick={() => handleNavClick('contact')}
@@ -130,3 +148,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
