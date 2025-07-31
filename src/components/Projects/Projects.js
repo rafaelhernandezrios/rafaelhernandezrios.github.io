@@ -2,26 +2,52 @@
 import React from 'react';
 import './Projects.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBrain, faWifi, faCamera, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import { faBrain, faWifi, faCamera, faCar, faRobot, faCodeBranch, faExternalLinkAlt } from '@fortawesome/free-solid-svg-icons';
+import emgproject from '../../images/emg_project.jpg'; // Imagen representativa para el podcast
 
 const projectsData = [
   {
-    title: "Muscle Monitoring Project AI Classification",
+    title: "Muscle Monitoring AI Classification",
     icon: faBrain,
-    description: "This project provides a solution for muscle monitoring using an Arduino and a machine learning classification model. The system acquires electromyographic (EMG) data in two distinct conditions: resting state and muscle contraction state, and uses this data to make real-time predictions about the muscle contraction state.",
-    link: "https://github.com/edgarhernandez94/EMGModelsPrediction"
+    description: "AI-powered EMG classification using an Arduino for muscle activity detection.",
+    link: "https://github.com/edgarhernandez94/EMGModelsPrediction",
+    image: emgproject,
+    imageClass: "emg-project-image"
   },
   {
     title: "Pepper Remote Control Suite",
     icon: faWifi,
-    description: "Pepper Control Dashboard is a versatile project that provides a web-based interface to remotely interact with and monitor the Pepper robot. It includes features such as live video streaming, movement control, text-to-speech commands, and remote Python code execution, all designed to enhance the robot's usability in research and development environments.",
-    link: "https://github.com/rafaelhernandezrios/PepperControlWeb"
+    description: "A web-based interface for controlling the Pepper robot remotely, featuring live video streaming, movement control, and speech interaction.",
+    link: "https://github.com/rafaelhernandezrios/PepperControlWeb",
+    image: "/images/pepper_project.jpg"
   },
   {
-    title: "Robot Image Recognition",
+    title: "Robot Image Recognition with GPT",
     icon: faCamera,
-    description: "Enhancing robots with GPT-powered perception.",
-    link: "https://github.com/edgarhernandez94/Robot_Imagerecognition_GPT"
+    description: "Enhancing robotic perception through GPT-powered image recognition.",
+    link: "https://github.com/edgarhernandez94/Robot_Imagerecognition_GPT",
+    image: "/images/robot_vision.jpg"
+  },
+  {
+    title: "Teledriving System",
+    icon: faCar,
+    description: "Development of a remote-controlled vehicle using Raspberry Pi for real-time video streaming and motor control.",
+    link: "https://github.com/edgarhernandez94/Teledriving",
+    image: "/images/teledriving_project.jpg"
+  },
+  {
+    title: "Unitree Go2 Teleoperation",
+    icon: faRobot,
+    description: "Teleoperation interface for controlling the Unitree Go2 quadruped robot over the internet.",
+    link: "https://github.com/edgarhernandez94/Unitree_Teleoperation",
+    image: "/images/unitree_project.jpg"
+  },
+  {
+    title: "AI-Powered CV Evaluation Platform",
+    icon: faCodeBranch,
+    description: "A web platform for evaluating CVs using AI, providing instant feedback and scoring.",
+    link: "https://github.com/edgarhernandez94/CV_Evaluation_Platform",
+    image: "/images/cv_project.jpg"
   }
 ];
 
@@ -29,15 +55,23 @@ const Projects = () => {
   return (
     <section id="projects" className="section projects-section">
       <div className="container">
-        <h2>Projects</h2>
+        <h2>My Projects</h2>
+        <p className="section-description">
+          Here are some of the projects I've been working on, ranging from AI-powered robotics to teleoperation systems.
+        </p>
         <div className="project-grid">
           {projectsData.map((project, index) => (
             <div key={index} className="project-card">
-              <h3><FontAwesomeIcon icon={project.icon} /> {project.title}</h3>
-              <p>{project.description}</p>
-              <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-link">
-                <FontAwesomeIcon icon={faExternalLinkAlt} /> View on GitHub
-              </a>
+              <div className={`project-image ${project.imageClass || ''}`}>
+                <img src={project.image} alt={project.title} />
+              </div>
+              <div className="project-content">
+                <h3><FontAwesomeIcon icon={project.icon} /> {project.title}</h3>
+                <p>{project.description}</p>
+                <a href={project.link} target="_blank" rel="noopener noreferrer" className="project-link">
+                  <FontAwesomeIcon icon={faExternalLinkAlt} /> View on GitHub
+                </a>
+              </div>
             </div>
           ))}
         </div>
