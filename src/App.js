@@ -6,7 +6,6 @@ import Hero from './components/Hero/Hero';
 import About from './components/About/About';
 import Highlights from './components/Highlights/Highlights';
 import Skills from './components/Skills/Skills';
-import Dashboard from './components/Dashboard/Dashboard';
 import Projects from './components/Projects/Projects';
 import Contact from './components/Contact/Contact';
 import Footer from './components/Footer/Footer';
@@ -62,7 +61,6 @@ function App() {
       <Navbar />
       <Hero />
       <About />
-      <Dashboard />
       <Highlights />
       <Projects />
       <Skills />

@@ -3,118 +3,58 @@ import './Skills.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faRobot, 
-  faBrain, 
   faCode, 
   faChartBar, 
-  faCloud, 
   faMicrochip
 } from '@fortawesome/free-solid-svg-icons';
 
 const skillsData = [
   {
     id: 1,
-    title: "Robotics",
+    title: "Robotics & AI",
     icon: faRobot,
     skills: [
-      "ROS (Robot Operating System)",
-      "MoveIt Framework",
-      "OpenCV",
-      "Python, C++",
-      "RViz, Gazebo",
-      "LiDAR Integration",
-      "SLAM Tools",
-      "Kinematics & Path Planning",
-      "Teleoperation Systems"
+      "ROS & MoveIt Framework",
+      "OpenCV & Computer Vision",
+      "TensorFlow & PyTorch",
+      "Machine Learning & Deep Learning",
+      "SLAM & Path Planning"
     ]
   },
   {
     id: 2,
-    title: "AI Development",
-    icon: faBrain,
+    title: "Software Development",
+    icon: faCode,
     skills: [
-      "TensorFlow, PyTorch",
-      "Scikit-learn",
-      "NumPy, Pandas",
-      "Machine Learning",
-      "Deep Learning",
-      "NLP",
-      "EEG/EMG Classification",
-      "Jupyter Notebook"
+      "React, JavaScript, TypeScript",
+      "Python, C++, Node.js",
+      "Flask, Django, RESTful APIs",
+      "MongoDB, MySQL, Git",
+      "Docker & CI/CD"
     ]
   },
   {
     id: 3,
-    title: "Web Development",
-    icon: faCode,
+    title: "Data & Cloud",
+    icon: faChartBar,
     skills: [
-      "React, HTML5, CSS3",
-      "JavaScript, TypeScript",
-      "Flask, Django",
-      "Node.js",
-      "MongoDB, MySQL",
-      "RESTful APIs",
-      "Git, GitHub",
-      "Docker, Webpack"
+      "Data Analysis & Visualization",
+      "AWS, Heroku, GitHub Actions",
+      "Pandas, NumPy, Matplotlib",
+      "Statistical Analysis",
+      "Infrastructure as Code"
     ]
   },
   {
     id: 4,
-    title: "Data Analysis",
-    icon: faChartBar,
-    skills: [
-      "Python, SQL",
-      "Pandas, Matplotlib",
-      "Seaborn",
-      "Excel, Tableau",
-      "Power BI",
-      "Statistical Analysis",
-      "Data Visualization",
-      "Automated Reporting"
-    ]
-  },
-  {
-    id: 5,
-    title: "Cloud Computing",
-    icon: faCloud,
-    skills: [
-      "AWS, Heroku",
-      "PythonAnywhere",
-      "CI/CD Pipelines",
-      "Docker, Terraform",
-      "GitHub Actions",
-      "Infrastructure as Code",
-      "Scalable Deployments",
-      "Bash Scripting"
-    ]
-  },
-  {
-    id: 6,
     title: "Embedded Systems",
     icon: faMicrochip,
     skills: [
-      "Arduino, ESP32",
-      "Raspberry Pi",
-      "STM32, Atmega328",
-      "C, Python",
-      "MATLAB",
-      "PySerial",
+      "Arduino, ESP32, Raspberry Pi",
+      "STM32, C Programming",
+      "MATLAB, Real-Time Systems",
       "Socket Programming",
-      "Real-Time Monitoring"
-    ]
-  },
-  {
-    id: 7,
-    title: "Version Control",
-    icon: faCode,
-    skills: [
-      "Git, GitHub",
-      "GitLab",
-      "Version Control",
-      "Collaborative Development",
-      "Code Reviews",
-      "Branching Strategies",
-      "Pull Requests",
-      "Documentation"
+      "Hardware Integration"
     ]
   }
 ];
