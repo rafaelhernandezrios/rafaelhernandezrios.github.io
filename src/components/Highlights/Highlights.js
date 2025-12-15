@@ -83,8 +83,14 @@ const Highlights = () => {
   ];
 
   return (
-    <section id="highlights" className="py-20 bg-background">
-      <div className="container">
+    <section id="highlights" className="py-20 bg-background-light relative overflow-hidden">
+      {/* Background gradient effects */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-20 right-10 w-72 h-72 bg-primary rounded-full blur-3xl"></div>
+        <div className="absolute bottom-20 left-10 w-96 h-96 bg-accent rounded-full blur-3xl"></div>
+      </div>
+
+      <div className="container relative z-10">
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">Highlights</h2>
           <p className="text-lg text-text-secondary max-w-2xl mx-auto">
@@ -92,56 +98,54 @@ const Highlights = () => {
           </p>
         </div>
         
-        {/* Horizontal Timeline */}
-        <div className="relative">
-          {/* Timeline Line */}
-          <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-primary via-accent to-primary transform -translate-y-1/2"></div>
-          
-          {/* Timeline Items */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-4">
-            {highlights.map((highlight, index) => (
-              <div 
-                key={highlight.id} 
-                className="relative bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group"
-              >
-                {/* Timeline Circle (Desktop only) */}
-                <div className="hidden lg:block absolute -top-4 left-1/2 transform -translate-x-1/2 z-10">
-                  <div className="w-8 h-8 bg-accent rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-                    <i className={`${highlight.icon} text-white text-xs`}></i>
-                  </div>
+        {/* Grid Layout */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          {highlights.map((highlight) => (
+            <div 
+              key={highlight.id} 
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group flex flex-col"
+            >
+              {/* Image Container */}
+              <div className="relative h-48 overflow-hidden">
+                <img 
+                  src={highlight.image} 
+                  alt={highlight.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                
+                {/* Category Badge */}
+                <div className="absolute top-4 right-4">
+                  <span className="px-3 py-1 bg-primary/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-white/20">
+                    {highlight.category}
+                  </span>
                 </div>
 
-                {/* Mobile Timeline Circle */}
-                <div className="lg:hidden absolute -left-4 top-6 z-10">
-                  <div className="w-8 h-8 bg-accent rounded-full border-4 border-white shadow-lg flex items-center justify-center">
-                    <i className={`${highlight.icon} text-white text-xs`}></i>
-                  </div>
-                </div>
-
-                {/* Card Content */}
-                <div className="p-6 pt-8 lg:pt-6">
-                  <div className="mb-4">
-                    <span className="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-semibold rounded-full">
-                      {highlight.category}
-                    </span>
-                  </div>
-                  
-                  <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-accent transition-colors duration-300">
-                    {highlight.title}
-                  </h3>
-                  
-                  <p className="text-sm text-text-secondary mb-4 line-clamp-3">
-                    {highlight.description}
-                  </p>
-                  
-                  <div className="flex items-center text-xs text-text-secondary">
-                    <i className="fas fa-calendar-alt mr-2 text-accent"></i>
-                    {highlight.date}
+                {/* Icon Overlay */}
+                <div className="absolute bottom-4 left-4">
+                  <div className="w-10 h-10 bg-accent rounded-lg flex items-center justify-center shadow-lg">
+                    <i className={`${highlight.icon} text-white text-lg`}></i>
                   </div>
                 </div>
               </div>
-            ))}
-          </div>
+
+              {/* Content */}
+              <div className="p-6 flex-1 flex flex-col">
+                <h3 className="text-lg font-bold text-text-primary mb-2 group-hover:text-accent transition-colors duration-300 line-clamp-2">
+                  {highlight.title}
+                </h3>
+                
+                <p className="text-sm text-text-secondary mb-4 line-clamp-3 flex-1">
+                  {highlight.description}
+                </p>
+                
+                <div className="flex items-center text-xs text-text-secondary pt-2 border-t border-primary/10">
+                  <i className="fas fa-calendar-alt mr-2 text-accent"></i>
+                  <span>{highlight.date}</span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
     </section>

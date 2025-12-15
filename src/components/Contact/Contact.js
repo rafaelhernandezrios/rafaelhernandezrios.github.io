@@ -1,7 +1,20 @@
 // src/components/Contact/Contact.js
 import React, { useState } from 'react';
+import emailjs from '@emailjs/browser';
 
 const Contact = () => {
+  // EmailJS Configuration
+  // To set up EmailJS:
+  // 1. Go to https://www.emailjs.com/ and create a free account
+  // 2. Create an email service (Gmail, Outlook, etc.)
+  // 3. Create an email template
+  // 4. Get your Public Key, Service ID, and Template ID
+  // 5. Replace the values below with your own or set them as environment variables
+  // For production, use environment variables: process.env.REACT_APP_EMAILJS_SERVICE_ID, etc.
+  const EMAILJS_SERVICE_ID = process.env.REACT_APP_EMAILJS_SERVICE_ID || 'YOUR_SERVICE_ID';
+  const EMAILJS_TEMPLATE_ID = process.env.REACT_APP_EMAILJS_TEMPLATE_ID || 'YOUR_TEMPLATE_ID';
+  const EMAILJS_PUBLIC_KEY = process.env.REACT_APP_EMAILJS_PUBLIC_KEY || 'YOUR_PUBLIC_KEY';
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -11,28 +24,80 @@ const Contact = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
       [e.target.name]: e.target.value
     });
+    // Clear error message when user starts typing
+    if (errorMessage) {
+      setErrorMessage('');
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-    
-    // Simulate form submission
-    setTimeout(() => {
+    setSubmitStatus('');
+    setErrorMessage('');
+
+    // Check if EmailJS is configured
+    if (EMAILJS_SERVICE_ID === 'YOUR_SERVICE_ID' || 
+        EMAILJS_TEMPLATE_ID === 'YOUR_TEMPLATE_ID' || 
+        EMAILJS_PUBLIC_KEY === 'YOUR_PUBLIC_KEY') {
+      // Fallback to mailto if EmailJS is not configured
+      const mailtoLink = `mailto:e.r.hdez94@gmail.com?subject=${encodeURIComponent(formData.subject)}&body=${encodeURIComponent(`Name: ${formData.name}\nEmail: ${formData.email}\n\nMessage:\n${formData.message}`)}`;
+      window.location.href = mailtoLink;
       setIsSubmitting(false);
       setSubmitStatus('success');
       setFormData({ name: '', email: '', subject: '', message: '' });
-      
       setTimeout(() => {
         setSubmitStatus('');
-      }, 3000);
-    }, 2000);
+      }, 5000);
+      return;
+    }
+
+    try {
+      // Initialize EmailJS
+      emailjs.init(EMAILJS_PUBLIC_KEY);
+
+      // Prepare template parameters
+      const templateParams = {
+        from_name: formData.name,
+        from_email: formData.email,
+        subject: formData.subject,
+        message: formData.message,
+        to_email: 'e.r.hdez94@gmail.com', // Your email address
+      };
+
+      // Send email using EmailJS
+      const response = await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        templateParams
+      );
+
+      // Success
+      if (response.status === 200) {
+        setSubmitStatus('success');
+        setFormData({ name: '', email: '', subject: '', message: '' });
+        setTimeout(() => {
+          setSubmitStatus('');
+        }, 5000);
+      }
+    } catch (error) {
+      console.error('Error sending email:', error);
+      setErrorMessage('Failed to send message. Please try again or contact me directly at e.r.hdez94@gmail.com');
+      setSubmitStatus('error');
+      setTimeout(() => {
+        setSubmitStatus('');
+        setErrorMessage('');
+      }, 5000);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const contactInfo = [
@@ -224,9 +289,16 @@ const Contact = () => {
               </button>
 
               {submitStatus === 'success' && (
-                <div className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-300 flex items-center space-x-2">
+                <div className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-300 flex items-center space-x-2 animate-fade-in">
                   <i className="fas fa-check-circle"></i>
                   <span>Message sent successfully! I'll get back to you soon.</span>
+                </div>
+              )}
+
+              {submitStatus === 'error' && errorMessage && (
+                <div className="p-4 bg-red-500/20 border border-red-500/50 rounded-lg text-red-300 flex items-start space-x-2 animate-fade-in">
+                  <i className="fas fa-exclamation-circle mt-0.5"></i>
+                  <span>{errorMessage}</span>
                 </div>
               )}
             </form>
