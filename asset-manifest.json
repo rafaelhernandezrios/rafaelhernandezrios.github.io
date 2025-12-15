@@ -1,0 +1,23 @@
+{
+  "files": {
+    "main.css": "/static/css/main.81079aa0.css",
+    "main.js": "/static/js/main.e6ebe466.js",
+    "static/js/488.d070f4dc.chunk.js": "/static/js/488.d070f4dc.chunk.js",
+    "static/media/expo-dubai.jpg": "/static/media/expo-dubai.fc9617bea8b650cd219b.jpg",
+    "static/media/retoanuies.jpg": "/static/media/retoanuies.40bf2a1bc4f6c425c216.jpg",
+    "static/media/ny-outstanding-presentation.jpg": "/static/media/ny-outstanding-presentation.84c9837d63b39f0cc127.jpg",
+    "static/media/miraiconference.jpg": "/static/media/miraiconference.b73e866091e2ff5f45df.jpg",
+    "static/media/expo-osaka.jpg": "/static/media/expo-osaka.abcce2c5af6a26124b6f.jpg",
+    "static/media/rafael.jpg": "/static/media/rafael.5384bd742432e2bbf559.jpg",
+    "static/media/hero-photo.jpg": "/static/media/hero-photo.b99045fbc122474495c1.jpg",
+    "static/media/mexjapon-podcast.jpg": "/static/media/mexjapon-podcast.85f5ec307d68fe350361.jpg",
+    "index.html": "/index.html",
+    "main.81079aa0.css.map": "/static/css/main.81079aa0.css.map",
+    "main.e6ebe466.js.map": "/static/js/main.e6ebe466.js.map",
+    "488.d070f4dc.chunk.js.map": "/static/js/488.d070f4dc.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.81079aa0.css",
+    "static/js/main.e6ebe466.js"
+  ]
+}
