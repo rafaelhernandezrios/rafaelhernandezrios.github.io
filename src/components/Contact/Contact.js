@@ -1,6 +1,5 @@
 // src/components/Contact/Contact.js
 import React, { useState } from 'react';
-import './Contact.css';
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -85,67 +84,71 @@ const Contact = () => {
   ];
 
   return (
-    <section id="contact" className="contact-section">
+    <section id="contact" className="py-20 bg-primary text-text-light">
       <div className="container">
-        <div className="contact-header">
-          <h2>🤝 Let's Connect</h2>
-          <p className="contact-subtitle">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-white mb-4">Let's Connect</h2>
+          <p className="text-lg text-text-light/80 max-w-2xl mx-auto">
             Open to collaborations in robotics R&D, mechatronics, web development, educational innovation, and emerging technology initiatives.
           </p>
         </div>
 
-        <div className="contact-content">
-          <div className="contact-info-section">
-            <div className="contact-info-grid">
+        <div className="grid lg:grid-cols-2 gap-12">
+          {/* Contact Info & Social Links */}
+          <div className="space-y-8">
+            <div className="space-y-4">
               {contactInfo.map((info, index) => (
-                <div key={index} className="contact-info-card">
-                  <div className="contact-info-icon">
-                    <i className={info.icon}></i>
+                <div key={index} className="flex items-start space-x-4">
+                  <div className="w-12 h-12 bg-accent/20 rounded-lg flex items-center justify-center flex-shrink-0">
+                    <i className={`${info.icon} text-accent text-xl`}></i>
                   </div>
-                  <div className="contact-info-content">
-                    <h4>{info.title}</h4>
+                  <div>
+                    <h4 className="text-white font-semibold mb-1">{info.title}</h4>
                     {info.link ? (
-                      <a href={info.link} className="contact-info-link">
+                      <a 
+                        href={info.link} 
+                        className="text-text-light/80 hover:text-accent transition-colors duration-200"
+                      >
                         {info.content}
                       </a>
                     ) : (
-                      <p>{info.content}</p>
+                      <p className="text-text-light/80">{info.content}</p>
                     )}
                   </div>
                 </div>
               ))}
             </div>
 
-            <div className="social-links-section">
-              <h3>Follow Me</h3>
-              <div className="social-links">
+            <div>
+              <h3 className="text-xl font-bold text-white mb-4">Follow Me</h3>
+              <div className="flex flex-wrap gap-4">
                 {socialLinks.map((social, index) => (
                   <a
                     key={index}
                     href={social.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="social-link"
+                    className="w-12 h-12 bg-white/10 hover:bg-accent rounded-lg flex items-center justify-center text-white hover:text-white transition-all duration-300 transform hover:scale-110"
                     style={{ '--social-color': social.color }}
                   >
                     <i className={social.icon}></i>
-                    <span>{social.name}</span>
                   </a>
                 ))}
               </div>
             </div>
           </div>
 
-          <div className="contact-form-section">
-            <div className="contact-form-header">
-              <h3>Send me a message</h3>
-              <p>I'm always interested in hearing about new opportunities and collaborations.</p>
+          {/* Contact Form */}
+          <div>
+            <div className="mb-6">
+              <h3 className="text-2xl font-bold text-white mb-2">Send me a message</h3>
+              <p className="text-text-light/80">I'm always interested in hearing about new opportunities and collaborations.</p>
             </div>
 
-            <form className="contact-form" onSubmit={handleSubmit}>
-              <div className="form-row">
-                <div className="form-group">
-                  <label htmlFor="name">Name *</label>
+            <form className="space-y-4" onSubmit={handleSubmit}>
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label htmlFor="name" className="block text-white font-medium mb-2">Name *</label>
                   <input
                     type="text"
                     id="name"
@@ -154,10 +157,11 @@ const Contact = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="Your full name"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-text-light/50 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/50 transition-all duration-200"
                   />
                 </div>
-                <div className="form-group">
-                  <label htmlFor="email">Email *</label>
+                <div>
+                  <label htmlFor="email" className="block text-white font-medium mb-2">Email *</label>
                   <input
                     type="email"
                     id="email"
@@ -166,12 +170,13 @@ const Contact = () => {
                     onChange={handleInputChange}
                     required
                     placeholder="your.email@example.com"
+                    className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-text-light/50 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/50 transition-all duration-200"
                   />
                 </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="subject">Subject *</label>
+              <div>
+                <label htmlFor="subject" className="block text-white font-medium mb-2">Subject *</label>
                 <input
                   type="text"
                   id="subject"
@@ -180,11 +185,12 @@ const Contact = () => {
                   onChange={handleInputChange}
                   required
                   placeholder="What's this about?"
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-text-light/50 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/50 transition-all duration-200"
                 />
               </div>
 
-              <div className="form-group">
-                <label htmlFor="message">Message *</label>
+              <div>
+                <label htmlFor="message" className="block text-white font-medium mb-2">Message *</label>
                 <textarea
                   id="message"
                   name="message"
@@ -193,31 +199,34 @@ const Contact = () => {
                   required
                   rows="5"
                   placeholder="Tell me about your project or collaboration idea..."
+                  className="w-full px-4 py-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-text-light/50 focus:outline-none focus:border-accent focus:ring-2 focus:ring-accent/50 transition-all duration-200 resize-none"
                 ></textarea>
               </div>
 
               <button 
                 type="submit" 
-                className={`submit-btn ${isSubmitting ? 'submitting' : ''}`}
+                className={`w-full px-6 py-4 bg-accent hover:bg-accent-dark text-white font-semibold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 ${
+                  isSubmitting ? 'opacity-75 cursor-not-allowed' : ''
+                }`}
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
                   <>
                     <i className="fas fa-spinner fa-spin"></i>
-                    Sending...
+                    <span>Sending...</span>
                   </>
                 ) : (
                   <>
                     <i className="fas fa-paper-plane"></i>
-                    Send Message
+                    <span>Send Message</span>
                   </>
                 )}
               </button>
 
               {submitStatus === 'success' && (
-                <div className="submit-success">
+                <div className="p-4 bg-green-500/20 border border-green-500/50 rounded-lg text-green-300 flex items-center space-x-2">
                   <i className="fas fa-check-circle"></i>
-                  Message sent successfully! I'll get back to you soon.
+                  <span>Message sent successfully! I'll get back to you soon.</span>
                 </div>
               )}
             </form>

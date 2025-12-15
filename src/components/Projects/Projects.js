@@ -1,6 +1,5 @@
 // src/components/Projects/Projects.js
 import React, { useState } from 'react';
-import './Projects.css';
 
 const Projects = () => {
   const [activeCategory, setActiveCategory] = useState('all');
@@ -110,66 +109,89 @@ const Projects = () => {
     : projectsData.filter(project => project.category === activeCategory);
 
   return (
-    <section id="projects" className="section projects-section">
+    <section id="projects" className="py-20 bg-background">
       <div className="container">
-        <div className="projects-header">
-          <h2>🚀 My Projects</h2>
-          <p className="projects-subtitle">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">Featured Projects</h2>
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
             Innovative solutions in robotics, AI, and technology. From brain-computer interfaces to teleoperation systems.
           </p>
         </div>
 
-        <div className="projects-filters">
+        {/* Category Filters */}
+        <div className="flex flex-wrap justify-center gap-3 mb-12">
           {categories.map((category) => (
             <button
               key={category.id}
-              className={`filter-btn ${activeCategory === category.id ? 'active' : ''}`}
+              className={`px-6 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+                activeCategory === category.id
+                  ? 'bg-accent text-white shadow-lg transform scale-105'
+                  : 'bg-white text-text-primary hover:bg-primary/10 hover:text-primary border border-primary/20'
+              }`}
               onClick={() => setActiveCategory(category.id)}
             >
-              <i className={category.icon}></i>
-              <span>{category.name}</span>
+              <i className={`${category.icon} mr-2`}></i>
+              {category.name}
             </button>
           ))}
         </div>
 
-        <div className="projects-grid">
+        {/* Projects Grid */}
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {filteredProjects.map((project) => (
-            <div key={project.id} className="project-card">
-              <div className="project-header">
-                <div className="project-icon">
-                  <i className={project.icon}></i>
-                </div>
-                <div className="project-status">
-                  <span className={`status-badge ${project.status.toLowerCase()}`}>
+            <div 
+              key={project.id} 
+              className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 group"
+            >
+              {/* Project Image/Icon Header */}
+              <div className="h-48 bg-gradient-to-br from-primary/20 to-accent/20 flex items-center justify-center relative overflow-hidden">
+                <div className="absolute inset-0 bg-primary/5"></div>
+                <i className={`${project.icon} text-6xl text-primary/40 group-hover:text-accent transition-colors duration-300`}></i>
+                <div className="absolute top-4 right-4">
+                  <span className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                    project.status === 'Active' 
+                      ? 'bg-green-100 text-green-800'
+                      : project.status === 'Completed'
+                      ? 'bg-blue-100 text-blue-800'
+                      : 'bg-purple-100 text-purple-800'
+                  }`}>
                     {project.status}
                   </span>
                 </div>
               </div>
 
-              <div className="project-content">
-                <h3>{project.title}</h3>
-                <p>{project.description}</p>
+              {/* Project Content */}
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-text-primary mb-2 group-hover:text-accent transition-colors duration-300">
+                  {project.title}
+                </h3>
+                <p className="text-text-secondary text-sm mb-4 line-clamp-3">
+                  {project.description}
+                </p>
                 
-                <div className="project-technologies">
+                {/* Technology Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
                   {project.technologies.map((tech, index) => (
-                    <span key={index} className="tech-tag">{tech}</span>
+                    <span 
+                      key={index} 
+                      className="px-3 py-1 bg-primary/10 text-primary text-xs font-medium rounded-full"
+                    >
+                      {tech}
+                    </span>
                   ))}
                 </div>
 
-                <div className="project-footer">
-                  <div className="project-meta">
-                    <span className="project-year">{project.year}</span>
-                    <span className="project-category">{project.category}</span>
-                  </div>
+                {/* Project Footer */}
+                <div className="flex items-center justify-between pt-4 border-t border-primary/10">
+                  <span className="text-xs text-text-secondary">{project.year}</span>
                   <a 
                     href={project.link} 
                     target="_blank" 
                     rel="noopener noreferrer" 
-                    className="project-link"
+                    className="text-accent hover:text-accent-dark font-medium text-sm flex items-center group/link"
                   >
-                    <i className="fab fa-github"></i>
-                    <span>View Code</span>
-                    <i className="fas fa-external-link-alt"></i>
+                    View Code
+                    <i className="fas fa-external-link-alt ml-2 text-xs group-hover/link:translate-x-1 transition-transform"></i>
                   </a>
                 </div>
               </div>

@@ -1,5 +1,4 @@
 import React from 'react';
-import './Skills.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
   faRobot, 
@@ -14,11 +13,11 @@ const skillsData = [
     title: "Robotics & AI",
     icon: faRobot,
     skills: [
-      "ROS & MoveIt Framework",
-      "OpenCV & Computer Vision",
-      "TensorFlow & PyTorch",
-      "Machine Learning & Deep Learning",
-      "SLAM & Path Planning"
+      { name: "ROS & MoveIt Framework", level: 90 },
+      { name: "OpenCV & Computer Vision", level: 85 },
+      { name: "TensorFlow & PyTorch", level: 80 },
+      { name: "Machine Learning & Deep Learning", level: 85 },
+      { name: "SLAM & Path Planning", level: 75 }
     ]
   },
   {
@@ -26,11 +25,11 @@ const skillsData = [
     title: "Software Development",
     icon: faCode,
     skills: [
-      "React, JavaScript, TypeScript",
-      "Python, C++, Node.js",
-      "Flask, Django, RESTful APIs",
-      "MongoDB, MySQL, Git",
-      "Docker & CI/CD"
+      { name: "React, JavaScript, TypeScript", level: 90 },
+      { name: "Python, C++, Node.js", level: 85 },
+      { name: "Flask, Django, RESTful APIs", level: 80 },
+      { name: "MongoDB, MySQL, Git", level: 85 },
+      { name: "Docker & CI/CD", level: 75 }
     ]
   },
   {
@@ -38,11 +37,11 @@ const skillsData = [
     title: "Data & Cloud",
     icon: faChartBar,
     skills: [
-      "Data Analysis & Visualization",
-      "AWS, Heroku, GitHub Actions",
-      "Pandas, NumPy, Matplotlib",
-      "Statistical Analysis",
-      "Infrastructure as Code"
+      { name: "Data Analysis & Visualization", level: 80 },
+      { name: "AWS, Heroku, GitHub Actions", level: 75 },
+      { name: "Pandas, NumPy, Matplotlib", level: 85 },
+      { name: "Statistical Analysis", level: 80 },
+      { name: "Infrastructure as Code", level: 70 }
     ]
   },
   {
@@ -50,35 +49,55 @@ const skillsData = [
     title: "Embedded Systems",
     icon: faMicrochip,
     skills: [
-      "Arduino, ESP32, Raspberry Pi",
-      "STM32, C Programming",
-      "MATLAB, Real-Time Systems",
-      "Socket Programming",
-      "Hardware Integration"
+      { name: "Arduino, ESP32, Raspberry Pi", level: 90 },
+      { name: "STM32, C Programming", level: 85 },
+      { name: "MATLAB, Real-Time Systems", level: 80 },
+      { name: "Socket Programming", level: 85 },
+      { name: "Hardware Integration", level: 90 }
     ]
   }
 ];
 
 const Skills = () => {
   return (
-    <section id="skills" className="skills-section">
+    <section id="skills" className="py-20 bg-background-light">
       <div className="container">
-        <h2>My Skills</h2>
-        <div className="skills-grid">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-bold text-text-primary mb-4">Skills & Expertise</h2>
+          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+            A comprehensive overview of my technical capabilities across robotics, AI, software development, and embedded systems.
+          </p>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8">
           {skillsData.map((category) => (
-            <div key={category.id} className="skill-category">
-              <h3>
-                <FontAwesomeIcon icon={category.icon} />
-                {category.title}
-              </h3>
-              <ul className="skills-list">
+            <div 
+              key={category.id} 
+              className="bg-white rounded-xl shadow-lg p-6 hover:shadow-xl transition-shadow duration-300"
+            >
+              <div className="flex items-center mb-6">
+                <div className="w-12 h-12 bg-gradient-to-br from-primary to-accent rounded-lg flex items-center justify-center mr-4">
+                  <FontAwesomeIcon icon={category.icon} className="text-white text-xl" />
+                </div>
+                <h3 className="text-2xl font-bold text-text-primary">{category.title}</h3>
+              </div>
+              
+              <div className="space-y-4">
                 {category.skills.map((skill, index) => (
-                  <li key={index}>
-                    <i className="fas fa-check"></i>
-                    {skill}
-                  </li>
+                  <div key={index}>
+                    <div className="flex justify-between items-center mb-2">
+                      <span className="text-sm font-medium text-text-primary">{skill.name}</span>
+                      <span className="text-xs font-semibold text-accent">{skill.level}%</span>
+                    </div>
+                    <div className="w-full bg-primary/10 rounded-full h-2.5 overflow-hidden">
+                      <div 
+                        className="h-full bg-gradient-to-r from-primary to-accent rounded-full transition-all duration-1000 ease-out"
+                        style={{ width: `${skill.level}%` }}
+                      ></div>
+                    </div>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </div>
           ))}
         </div>

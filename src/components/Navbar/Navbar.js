@@ -1,6 +1,5 @@
 // src/components/Navbar/Navbar.js
 import React, { useState, useEffect } from 'react';
-import './Navbar.css';
 
 const Navbar = () => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -38,104 +37,97 @@ const Navbar = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
-  const socialLinks = [
-    { name: 'LinkedIn', url: 'https://linkedin.com/in/rafaelhernandezrios', icon: 'fab fa-linkedin-in' },
-    { name: 'GitHub', url: 'https://github.com/rafaelhernandezrios', icon: 'fab fa-github' },
-    { name: 'Twitter', url: 'https://twitter.com/rafaelhernandez', icon: 'fab fa-twitter' },
-    { name: 'Email', url: 'mailto:rafael@example.com', icon: 'fas fa-envelope' }
+  const navLinks = [
+    { name: 'About', section: 'about', icon: 'fas fa-user' },
+    { name: 'Projects', section: 'projects', icon: 'fas fa-code' },
+    { name: 'Skills', section: 'skills', icon: 'fas fa-cogs' },
+    { name: 'Highlights', section: 'highlights', icon: 'fas fa-star' },
+    { name: 'Contact', section: 'contact', icon: 'fas fa-envelope' }
   ];
 
   return (
-    <nav className={`navbar ${isScrolled ? 'scrolled' : ''}`}>
-      <div className="navbar-container">
-        <a href="#about" className="navbar-brand" onClick={() => handleNavClick('about')}>
-          <span className="brand-text">Rafael Hernandez</span>
-          <span className="brand-subtitle">Full Stack Developer</span>
-        </a>
-        
-        <div className="navbar-content">
-          <ul className={`navbar-nav ${isMobileMenuOpen ? 'open' : ''}`}>
-            <li className="nav-item">
-              <a 
-                href="#about" 
-                className={`nav-link ${activeSection === 'about' ? 'active' : ''}`}
-                onClick={() => handleNavClick('about')}
-              >
-                <i className="fas fa-user"></i>
-                <span>About</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a 
-                href="#projects" 
-                className={`nav-link ${activeSection === 'projects' ? 'active' : ''}`}
-                onClick={() => handleNavClick('projects')}
-              >
-                <i className="fas fa-code"></i>
-                <span>Projects</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a 
-                href="#skills" 
-                className={`nav-link ${activeSection === 'skills' ? 'active' : ''}`}
-                onClick={() => handleNavClick('skills')}
-              >
-                <i className="fas fa-cogs"></i>
-                <span>Skills</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a 
-                href="#highlights" 
-                className={`nav-link ${activeSection === 'highlights' ? 'active' : ''}`}
-                onClick={() => handleNavClick('highlights')}
-              >
-                <i className="fas fa-star"></i>
-                <span>Highlights</span>
-              </a>
-            </li>
-            <li className="nav-item">
-              <a 
-                href="#contact" 
-                className={`nav-link ${activeSection === 'contact' ? 'active' : ''}`}
-                onClick={() => handleNavClick('contact')}
-              >
-                <i className="fas fa-envelope"></i>
-                <span>Contact</span>
-              </a>
-            </li>
-          </ul>
-
-          <div className={`social-links ${isMobileMenuOpen ? 'open' : ''}`}>
-            {socialLinks.map((social, index) => (
+    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-background/95 backdrop-blur-md shadow-lg' 
+        : 'bg-transparent'
+    }`}>
+      <div className="container">
+        <div className="flex items-center justify-between h-20">
+          {/* Brand/Name - Left */}
+          <a 
+            href="#about" 
+            className="text-xl font-bold text-text-primary hover:text-accent transition-colors duration-200"
+            onClick={() => handleNavClick('about')}
+          >
+            Rafael Hernandez
+          </a>
+          
+          {/* Navigation Links - Right */}
+          <div className="hidden md:flex items-center space-x-8">
+            {navLinks.map((link) => (
               <a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-link"
-                aria-label={social.name}
+                key={link.section}
+                href={`#${link.section}`}
+                className={`relative text-sm font-medium transition-colors duration-200 ${
+                  activeSection === link.section
+                    ? 'text-accent'
+                    : 'text-text-primary hover:text-accent'
+                }`}
+                onClick={() => handleNavClick(link.section)}
               >
-                <i className={social.icon}></i>
+                {link.name}
+                {activeSection === link.section && (
+                  <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-accent"></span>
+                )}
+              </a>
+            ))}
+          </div>
+
+          {/* Mobile Menu Button */}
+          <button
+            className={`md:hidden flex flex-col justify-center items-center w-8 h-8 space-y-1.5 focus:outline-none ${
+              isMobileMenuOpen ? 'text-accent' : 'text-text-primary'
+            }`}
+            onClick={toggleMobileMenu}
+            aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
+          >
+            <span className={`block w-6 h-0.5 bg-current transition-all duration-300 ${
+              isMobileMenuOpen ? 'rotate-45 translate-y-2' : ''
+            }`}></span>
+            <span className={`block w-6 h-0.5 bg-current transition-all duration-300 ${
+              isMobileMenuOpen ? 'opacity-0' : ''
+            }`}></span>
+            <span className={`block w-6 h-0.5 bg-current transition-all duration-300 ${
+              isMobileMenuOpen ? '-rotate-45 -translate-y-2' : ''
+            }`}></span>
+          </button>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`md:hidden overflow-hidden transition-all duration-300 ${
+          isMobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+        }`}>
+          <div className="py-4 space-y-2">
+            {navLinks.map((link) => (
+              <a
+                key={link.section}
+                href={`#${link.section}`}
+                className={`block px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 ${
+                  activeSection === link.section
+                    ? 'bg-accent/10 text-accent'
+                    : 'text-text-primary hover:bg-primary/10 hover:text-accent'
+                }`}
+                onClick={() => handleNavClick(link.section)}
+              >
+                <i className={`${link.icon} mr-2`}></i>
+                {link.name}
               </a>
             ))}
           </div>
         </div>
-
-        <button 
-          className={`mobile-menu-btn ${isMobileMenuOpen ? 'active' : ''}`}
-          onClick={toggleMobileMenu}
-          aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
-        >
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-          <span className="hamburger-line"></span>
-        </button>
       </div>
     </nav>
   );
 };
 
 export default Navbar;
-
