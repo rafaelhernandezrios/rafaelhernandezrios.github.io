@@ -1,0 +1,105 @@
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/space-grotesk';
+@import '@fontsource/jetbrains-mono/400.css';
+@import '@fontsource/jetbrains-mono/500.css';
+
+:root {
+  --ink: #0c1424;
+  --ink-2: #131e33;
+  --ink-3: #1c2a44;
+  --paper: #f6f5f1;
+  --paper-2: #ecebe5;
+  --line: rgba(12, 20, 36, 0.12);
+  --line-dark: rgba(255, 255, 255, 0.1);
+  --text: #18202e;
+  --muted: #5b6474;
+  --muted-dark: #9aa6ba;
+  --accent: #f08a7e;      /* coral — carried over from the previous site */
+  --accent-2: #e8664f;
+  --teal: #3fb6a8;
+  --signal: #7fe0d2;
+  --radius: 14px;
+  --radius-lg: 22px;
+  --max: 1180px;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Space Grotesk Variable', var(--font-sans);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 80px; -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  line-height: 1.6;
+  color: var(--text);
+  background: var(--paper);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+img, video, svg { max-width: 100%; display: block; }
+img { height: auto; }
+a { color: inherit; }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.1; letter-spacing: -0.02em; margin: 0; font-weight: 600; }
+p { margin: 0; }
+::selection { background: var(--accent); color: var(--ink); }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 4px; }
+
+.container { width: min(100% - 2.5rem, var(--max)); margin-inline: auto; }
+.section { padding-block: clamp(4.5rem, 9vw, 7.5rem); }
+.section--dark { background: var(--ink); color: #e9edf4; }
+.section--tint { background: var(--paper-2); }
+
+.kicker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+.kicker::before { content: ''; width: 1.6rem; height: 1px; background: currentColor; }
+.section--dark .kicker { color: var(--accent); }
+
+.section-head { display: grid; gap: 1rem; margin-bottom: clamp(2.5rem, 5vw, 3.5rem); max-width: 46rem; }
+.section-head h2 { font-size: clamp(2rem, 4.2vw, 3.1rem); }
+.section-head p { color: var(--muted); font-size: 1.1rem; }
+.section--dark .section-head p { color: var(--muted-dark); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 0.55rem;
+  padding: 0.85rem 1.35rem; border-radius: 999px;
+  font-weight: 600; font-size: 0.97rem; text-decoration: none;
+  border: 1px solid transparent; transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, color 0.18s;
+}
+.btn:hover { transform: translateY(-1px); }
+.btn--primary { background: var(--accent); color: var(--ink); }
+.btn--primary:hover { background: #f5a196; }
+.btn--ghost { border-color: currentColor; color: inherit; opacity: 0.9; }
+.btn--ghost:hover { opacity: 1; background: rgba(255,255,255,0.06); }
+.btn svg { width: 1em; height: 1em; }
+
+.chip {
+  display: inline-flex; align-items: center;
+  font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.02em;
+  padding: 0.28rem 0.6rem; border-radius: 999px;
+  border: 1px solid var(--line); color: var(--muted); background: rgba(255,255,255,0.5);
+  white-space: nowrap;
+}
+.section--dark .chip { border-color: var(--line-dark); color: var(--muted-dark); background: transparent; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); border: 0; }
+
+/* Reveal-on-scroll (progressive enhancement: content is visible without JS) */
+.js .reveal { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.js .reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  .js .reveal { opacity: 1; transform: none; }
+}

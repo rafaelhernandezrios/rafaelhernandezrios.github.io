@@ -1,0 +1,21 @@
+---
+import { Image } from 'astro:assets';
+import ProjectCover from './ProjectCover.astro';
+import type { Project } from '../data/projects';
+import { type Lang, t } from '../i18n/ui';
+interface Props { project: Project; lang: Lang; widths?: number[]; sizes?: string; eager?: boolean; class?: string }
+const { project: p, lang, widths = [480, 800, 1200], sizes = '(max-width: 720px) 100vw, 560px', eager = false, class: cls } = Astro.props;
+---
+{p.cover ? (
+  <Image
+    class:list={[cls, { contain: p.coverFit === 'contain' }]}
+    src={p.cover}
+    alt={p.coverAlt ? t(p.coverAlt, lang) : t(p.title, lang)}
+    widths={widths}
+    sizes={sizes}
+    loading={eager ? 'eager' : 'lazy'}
+    decoding="async"
+  />
+) : (
+  <ProjectCover class={cls} motif={p.motif} accent={p.accent} seed={p.slug} label={t(p.title, lang)} />
+)}

@@ -1,0 +1,102 @@
+---
+import '../styles/global.css';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
+import { type Lang, altPath } from '../i18n/ui';
+import { person } from '../data/site';
+
+interface Props {
+  lang: Lang;
+  title: string;
+  description: string;
+  image?: string;
+  type?: 'website' | 'article';
+  jsonLd?: Record<string, unknown>[];
+  noindex?: boolean;
+}
+
+const { lang, title, description, image = '/og-image.png', type = 'website', jsonLd = [], noindex = false } = Astro.props;
+const site = Astro.site!;
+const path = Astro.url.pathname.replace(/\/?$/, '/');
+const canonical = new URL(path, site).href;
+const enUrl = new URL(altPath(path, 'en'), site).href;
+const esUrl = new URL(altPath(path, 'es'), site).href;
+const ogImage = new URL(image, site).href;
+
+const personLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: person.fullName,
+  alternateName: person.name,
+  jobTitle: person.jobTitle,
+  url: site.href,
+  image: new URL('/og-image.png', site).href,
+  email: `mailto:${person.email}`,
+  sameAs: [person.linkedin, person.github],
+  worksFor: { '@type': 'Organization', name: person.org, url: person.orgUrl },
+  address: { '@type': 'PostalAddress', addressLocality: 'Osaka', addressCountry: 'JP' },
+  knowsAbout: ['Robotics', 'Neurotechnology', 'EEG', 'Brain-computer interfaces', 'Virtual reality', 'Teleoperation', 'Artificial intelligence'],
+};
+---
+<!doctype html>
+<html lang={lang === 'es' ? 'es' : 'en'}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta name="author" content={person.fullName} />
+    <meta name="robots" content={noindex ? 'noindex, follow' : 'index, follow'} />
+    <meta name="theme-color" content="#0c1424" />
+    <!-- Keeps the existing Google Search Console verification -->
+    <meta name="google-site-verification" content="HpSuy_8Y-RJNw30DAifUEnjS5zHi_eytPpzgt2O9jck" />
+    <link rel="canonical" href={canonical} />
+    {!noindex && (
+      <>
+        <link rel="alternate" hreflang="en" href={enUrl} />
+        <link rel="alternate" hreflang="es" href={esUrl} />
+        <link rel="alternate" hreflang="x-default" href={enUrl} />
+      </>
+    )}
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" href="/logo.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/logo192.png" />
+    <link rel="manifest" href="/manifest.json" />
+
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Rafael Hernández" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:locale" content={lang === 'es' ? 'es_MX' : 'en_US'} />
+    <meta property="og:locale:alternate" content={lang === 'es' ? 'en_US' : 'es_MX'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <script type="application/ld+json" set:html={JSON.stringify([personLd, ...jsonLd])} />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <a class="skip" href="#main">{lang === 'es' ? 'Saltar al contenido' : 'Skip to content'}</a>
+    <Nav lang={lang} />
+    <main id="main">
+      <slot />
+    </main>
+    <Footer lang={lang} />
+    <script>
+      const io = new IntersectionObserver(
+        (entries) => entries.forEach((e) => { if (e.isIntersecting) { e.target.classList.add('is-in'); io.unobserve(e.target); } }),
+        { rootMargin: '0px 0px -8% 0px' },
+      );
+      document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+    </script>
+    <style>
+      .skip { position: absolute; left: -999px; top: 0.5rem; z-index: 100; background: var(--accent); color: var(--ink); padding: 0.5rem 1rem; border-radius: 8px; }
+      .skip:focus { left: 0.5rem; }
+    </style>
+  </body>
+</html>

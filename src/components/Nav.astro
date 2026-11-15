@@ -1,0 +1,81 @@
+---
+import { type Lang, ui, t, localePath, altPath } from '../i18n/ui';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const home = localePath('/', lang);
+const links = [
+  { href: `${home}#about`, label: t(ui.nav.about, lang) },
+  { href: `${home}#research`, label: t(ui.nav.research, lang) },
+  { href: localePath('/projects/', lang), label: t(ui.nav.projects, lang) },
+  { href: `${home}#highlights`, label: t(ui.nav.highlights, lang) },
+  { href: `${home}#contact`, label: t(ui.nav.contact, lang) },
+];
+const other: Lang = lang === 'en' ? 'es' : 'en';
+const otherHref = altPath(Astro.url.pathname, other);
+---
+<header class="nav" data-nav>
+  <div class="container nav__inner">
+    <a class="brand" href={home} aria-label="Rafael Hernández — home">
+      <span class="brand__mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M3 17h5l3-9 5 17 4-12 2 4h7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      <span class="brand__name">Rafael Hernández</span>
+    </a>
+    <nav aria-label={lang === 'es' ? 'Principal' : 'Main'}>
+      <ul class="nav__links" id="nav-links">
+        {links.map((l) => <li><a href={l.href}>{l.label}</a></li>)}
+      </ul>
+    </nav>
+    <div class="nav__right">
+      <a class="lang" href={otherHref} hreflang={other} lang={other} title={other === 'es' ? 'Ver en español' : 'View in English'}>
+        <span class:list={{ on: lang === 'en' }}>EN</span><span aria-hidden="true">/</span><span class:list={{ on: lang === 'es' }}>ES</span>
+      </a>
+      <button class="burger" aria-controls="nav-links" aria-expanded="false" aria-label="Menu">
+        <span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<script>
+  const nav = document.querySelector<HTMLElement>('[data-nav]')!;
+  const btn = nav.querySelector<HTMLButtonElement>('.burger')!;
+  const onScroll = () => nav.classList.toggle('is-scrolled', window.scrollY > 12);
+  onScroll();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  btn.addEventListener('click', () => {
+    const open = nav.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+  nav.querySelectorAll('.nav__links a').forEach((a) => a.addEventListener('click', () => {
+    nav.classList.remove('is-open'); btn.setAttribute('aria-expanded', 'false');
+  }));
+</script>
+
+<style>
+  .nav { position: fixed; inset: 0 0 auto; z-index: 50; color: #e9edf4; transition: background 0.25s, border-color 0.25s, backdrop-filter 0.25s; border-bottom: 1px solid transparent; }
+  .nav.is-scrolled, .nav.is-open { background: rgba(12, 20, 36, 0.86); backdrop-filter: saturate(1.4) blur(14px); border-color: var(--line-dark); }
+  .nav__inner { display: flex; align-items: center; justify-content: space-between; height: 68px; gap: 1rem; }
+  .brand { display: inline-flex; align-items: center; gap: 0.65rem; text-decoration: none; font-family: var(--font-display); font-weight: 600; letter-spacing: -0.01em; }
+  .brand__mark { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: var(--accent); color: var(--ink); }
+  .brand__mark svg { width: 22px; }
+  .nav__links { display: flex; gap: 0.25rem; list-style: none; margin: 0; padding: 0; }
+  .nav__links a { text-decoration: none; font-size: 0.93rem; padding: 0.5rem 0.8rem; border-radius: 999px; color: #c9d2e0; transition: color 0.15s, background 0.15s; }
+  .nav__links a:hover { color: #fff; background: rgba(255,255,255,0.07); }
+  .nav__right { display: flex; align-items: center; gap: 0.5rem; }
+  .lang { font-family: var(--font-mono); font-size: 0.78rem; text-decoration: none; display: inline-flex; gap: 0.3rem; padding: 0.45rem 0.75rem; border: 1px solid var(--line-dark); border-radius: 999px; color: var(--muted-dark); }
+  .lang .on { color: #fff; }
+  .lang:hover { border-color: rgba(255,255,255,0.3); }
+  .burger { display: none; width: 40px; height: 40px; border: 1px solid var(--line-dark); border-radius: 999px; background: none; cursor: pointer; padding: 0; place-content: center; gap: 5px; }
+  .burger span { display: block; width: 16px; height: 1.5px; background: #fff; transition: transform 0.2s; }
+  .nav.is-open .burger span:first-child { transform: translateY(3.25px) rotate(45deg); }
+  .nav.is-open .burger span:last-child { transform: translateY(-3.25px) rotate(-45deg); }
+
+  @media (max-width: 880px) {
+    .burger { display: grid; }
+    .nav__links { position: absolute; top: 68px; left: 0; right: 0; flex-direction: column; padding: 0.75rem 1.25rem 1.5rem; background: rgba(12, 20, 36, 0.97); border-bottom: 1px solid var(--line-dark); display: none; }
+    .nav.is-open .nav__links { display: flex; }
+    .nav__links a { display: block; font-size: 1.05rem; padding: 0.8rem 0.5rem; }
+    .brand__name { font-size: 0.98rem; }
+  }
+</style>

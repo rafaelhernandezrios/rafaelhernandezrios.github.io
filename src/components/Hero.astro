@@ -1,0 +1,104 @@
+---
+import { Image } from 'astro:assets';
+import heroPhoto from '../assets/photos/hero-photo.jpg';
+import { type Lang, ui, t, localePath } from '../i18n/ui';
+import { stats } from '../data/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+---
+<section class="hero">
+  <canvas class="hero__signal" aria-hidden="true"></canvas>
+  <div class="container hero__inner">
+    <div class="hero__copy">
+      <p class="kicker">{t(ui.hero.kicker, lang)}</p>
+      <h1>
+        <span class="hero__name">Rafael Hernández</span>
+        <span class="hero__title">{t(ui.hero.title, lang)}</span>
+      </h1>
+      <p class="hero__lead">{t(ui.hero.lead, lang)}</p>
+      <div class="hero__ctas">
+        <a class="btn btn--primary" href={localePath('/projects/', lang)}>{t(ui.hero.ctaWork, lang)} <span aria-hidden="true">→</span></a>
+        <a class="btn btn--ghost" href="#contact">{t(ui.hero.ctaContact, lang)}</a>
+      </div>
+    </div>
+    <figure class="hero__figure">
+      <Image src={heroPhoto} alt={lang === 'es' ? 'Rafael Hernández junto a un robot humanoide en Osaka' : 'Rafael Hernández next to a humanoid robot in Osaka'} widths={[480, 720]} sizes="(max-width: 900px) 90vw, 460px" loading="eager" fetchpriority="high" />
+      <figcaption><span class="dot"></span> {lang === 'es' ? 'Osaka, Japón' : 'Osaka, Japan'}</figcaption>
+    </figure>
+  </div>
+  <div class="container">
+    <dl class="hero__stats">
+      {stats.map((s) => <div><dt>{s.n}</dt><dd>{t(s.l, lang)}</dd></div>)}
+    </dl>
+  </div>
+</section>
+
+<script>
+  // Ambient multi-channel "EEG" traces behind the hero. Pauses off-screen and
+  // respects reduced-motion.
+  const canvas = document.querySelector<HTMLCanvasElement>('.hero__signal');
+  if (canvas) {
+    const ctx = canvas.getContext('2d')!;
+    const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let w = 0, hgt = 0, t = 0, raf = 0, visible = true;
+    const ch = 8;
+    const resize = () => {
+      const dpr = Math.min(devicePixelRatio || 1, 2);
+      w = canvas.clientWidth; hgt = canvas.clientHeight;
+      canvas.width = w * dpr; canvas.height = hgt * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    };
+    const draw = () => {
+      ctx.clearRect(0, 0, w, hgt);
+      for (let c = 0; c < ch; c++) {
+        const y0 = hgt * (0.12 + (c / (ch - 1)) * 0.76);
+        const amp = 6 + (c % 3) * 3;
+        ctx.beginPath();
+        for (let x = 0; x <= w; x += 4) {
+          const k = x * 0.012 + t * (0.6 + c * 0.05);
+          const y = y0 + Math.sin(k + c) * amp + Math.sin(k * 2.9 + c * 2) * amp * 0.45 + Math.sin(k * 7.3 + c) * amp * 0.18;
+          x === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+        }
+        const g = ctx.createLinearGradient(0, 0, w, 0);
+        g.addColorStop(0, 'rgba(127,224,210,0)');
+        g.addColorStop(0.5, c % 4 === 1 ? 'rgba(240,138,126,0.32)' : 'rgba(127,224,210,0.16)');
+        g.addColorStop(1, 'rgba(127,224,210,0)');
+        ctx.strokeStyle = g; ctx.lineWidth = 1.2; ctx.stroke();
+      }
+    };
+    const loop = () => { t += 0.016; draw(); if (visible) raf = requestAnimationFrame(loop); };
+    resize(); draw();
+    addEventListener('resize', () => { resize(); draw(); });
+    if (!reduce) {
+      new IntersectionObserver(([e]) => { visible = e.isIntersecting; cancelAnimationFrame(raf); if (visible) loop(); }).observe(canvas);
+    }
+  }
+</script>
+
+<style>
+  .hero { position: relative; background: radial-gradient(1200px 600px at 85% -10%, rgba(240,138,126,0.18), transparent 60%), radial-gradient(900px 500px at 0% 110%, rgba(63,182,168,0.14), transparent 60%), var(--ink); color: #e9edf4; padding: 132px 0 3rem; overflow: hidden; }
+  .hero__signal { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+  .hero__inner { position: relative; display: grid; grid-template-columns: 1.25fr 0.75fr; gap: clamp(2rem, 5vw, 4.5rem); align-items: center; }
+  h1 { display: grid; gap: 1.1rem; margin-top: 1.4rem; }
+  .hero__name { font-family: var(--font-mono); font-weight: 500; font-size: 1rem; letter-spacing: 0; color: var(--signal); }
+  .hero__title { font-size: clamp(2.35rem, 5.4vw, 4.1rem); line-height: 1.04; letter-spacing: -0.03em; text-wrap: balance; }
+  .hero__lead { margin-top: 1.6rem; font-size: clamp(1.02rem, 1.4vw, 1.15rem); color: #b9c3d3; max-width: 38rem; }
+  .hero__ctas { display: flex; flex-wrap: wrap; gap: 0.8rem; margin-top: 2.2rem; }
+  .hero__figure { margin: 0; position: relative; border-radius: var(--radius-lg); overflow: hidden; border: 1px solid var(--line-dark); box-shadow: 0 40px 80px -40px rgba(0,0,0,0.7); transform: rotate(1.2deg); }
+  .hero__figure img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 62% center; }
+  figcaption { position: absolute; left: 0.9rem; bottom: 0.9rem; display: inline-flex; align-items: center; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.72rem; color: #fff; background: rgba(12,20,36,0.72); backdrop-filter: blur(6px); padding: 0.4rem 0.7rem; border-radius: 999px; }
+  .dot { width: 7px; height: 7px; border-radius: 50%; background: var(--signal); box-shadow: 0 0 0 0 rgba(127,224,210,0.6); animation: pulse 2s infinite; }
+  @keyframes pulse { 70% { box-shadow: 0 0 0 8px rgba(127,224,210,0); } 100% { box-shadow: 0 0 0 0 rgba(127,224,210,0); } }
+  .hero__stats { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); margin: clamp(3rem, 6vw, 4.5rem) 0 0; border-top: 1px solid var(--line-dark); }
+  .hero__stats div { padding: 1.3rem 1rem 0 0; }
+  dt { font-family: var(--font-display); font-size: clamp(1.8rem, 3vw, 2.4rem); font-weight: 600; color: #fff; }
+  dd { margin: 0.15rem 0 0; color: var(--muted-dark); font-size: 0.9rem; }
+
+  @media (max-width: 900px) {
+    .hero { padding-top: 108px; }
+    .hero__inner { grid-template-columns: 1fr; }
+    .hero__figure { max-width: 420px; transform: none; }
+    .hero__figure img { aspect-ratio: 4 / 3; }
+    .hero__stats { grid-template-columns: repeat(2, 1fr); }
+  }
+</style>
