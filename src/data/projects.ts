@@ -6,6 +6,15 @@ import auraDemo from '../assets/projects/aura-sdk-demo.jpg';
 import clasesRobotica from '../assets/projects/clases-robotica.png';
 import expoOsaka from '../assets/photos/expo-osaka.jpg';
 import emgPhoto from '../assets/photos/emg_project.jpg';
+import eegPipeline from '../assets/projects/eeg-pipeline.jpg';
+import sutureBench from '../assets/projects/suture-trainer-bench.jpg';
+import suturePoster from '../assets/projects/suture-trainer-poster.jpg';
+import sutureActivities from '../assets/projects/suture-trainer-activities.jpg';
+import sutureViews from '../assets/projects/suture-trainer-views.jpg';
+import phobiaView from '../assets/projects/phobia-arachnophobia-360.jpg';
+import interviewDashboard from '../assets/projects/interview-dashboard.jpg';
+import interviewLetter from '../assets/projects/interview-letter.jpg';
+import vrEegStudio from '../assets/projects/vr-eeg-studio.jpg';
 
 /**
  * Curated projects. Each one gets its own case-study page at /projects/<slug>/.
@@ -84,6 +93,9 @@ export const projects: Project[] = [
       en: 'A reproducible pipeline used in my cognitive-workload studies (controlled lab protocol and an ecological exergaming task); the anonymized dataset is published as a separate repository.',
       es: 'Un pipeline reproducible que uso en mis estudios de carga cognitiva (protocolo controlado de laboratorio y una tarea ecológica de exergaming); el dataset anonimizado está publicado en un repositorio aparte.',
     },
+    gallery: [
+      { src: eegPipeline, alt: { en: 'Processing pipeline: LSL stream, filtering, windowing and artifact handling, Welch PSD, theta/alpha index', es: 'Pipeline de procesamiento: stream LSL, filtrado, ventaneo y manejo de artefactos, PSD de Welch, índice theta/alfa' }, caption: { en: 'Signal-processing pipeline from the raw LSL stream to a session-level cognitive-load index.', es: 'Pipeline de procesamiento desde el stream LSL crudo hasta un índice de carga cognitiva por sesión.' } },
+    ],
     stack: ['Python', 'LSL', 'NumPy / SciPy', 'MNE', 'statsmodels', 'PyQt', 'AURA EEG'],
     repos: [{ name: 'PHD' }, { name: 'Wiley-Rafa', label: 'EEG dataset' }],
   },
@@ -99,6 +111,17 @@ export const projects: Project[] = [
     featured: true,
     motif: 'surgery',
     accent: '#3fb6a8',
+    cover: sutureBench,
+    coverAlt: { en: 'Experimental bench: laptop running Unity, 3D Systems Touch haptic robot, Meta Quest headset and controllers', es: 'Banco experimental: laptop con Unity, robot háptico 3D Systems Touch, visor Meta Quest y controles' },
+    video: {
+      src: '/media/suture-trainer-activities.mp4',
+      poster: suturePoster,
+      caption: { en: 'The six training activities in the laparoscopic view (sped up 5×).', es: 'Las seis actividades de entrenamiento en vista laparoscópica (acelerado 5×).' },
+    },
+    gallery: [
+      { src: sutureActivities, alt: { en: 'Six training activities: needle handling, ring precision, suturing steps', es: 'Seis actividades de entrenamiento: manejo de aguja, precisión en anillos, pasos de sutura' }, caption: { en: 'Activities (a)–(f): from needle handling and ring precision to a complete running suture.', es: 'Actividades (a)–(f): desde manejo de aguja y precisión en anillos hasta una sutura continua completa.' } },
+      { src: sutureViews, alt: { en: 'Previous open view compared with the new laparoscopic view', es: 'Vista abierta anterior comparada con la nueva vista laparoscópica' }, caption: { en: 'Earlier open view (a) vs. the current laparoscopic camera view (b).', es: 'Vista abierta anterior (a) vs. la vista de cámara laparoscópica actual (b).' } },
+    ],
     role: { en: 'Researcher · Unity & hardware integration', es: 'Investigador · integración Unity y hardware' },
     problem: {
       en: 'Surgical skills training is cognitively demanding; a simulator that ignores the trainee’s mental state can overload novices or under-challenge experts.',
@@ -128,6 +151,8 @@ export const projects: Project[] = [
     featured: true,
     motif: 'phobia',
     accent: '#8b7cf6',
+    cover: phobiaView,
+    coverAlt: { en: 'Frame from a 360° arachnophobia exposure clip: a living room with a spider on the wall', es: 'Cuadro de un clip 360° de exposición a aracnofobia: una sala con una araña en la pared' },
     role: { en: 'Lead developer · system architecture', es: 'Desarrollador principal · arquitectura del sistema' },
     problem: {
       en: 'Exposure therapy research needs controlled, repeatable sessions with synchronized physiological data — and lab PCs that are often locked down.',
@@ -213,6 +238,36 @@ export const projects: Project[] = [
     repos: [{ name: 'AURA_SDK' }, { name: 'AURA_Software' }, { name: 'aura-webplatform' }, { name: 'Unofficial-AURAGUI' }],
   },
   {
+    slug: 'vr-eeg-studio',
+    title: { en: 'VR EEG Studio', es: 'VR EEG Studio' },
+    tagline: {
+      en: 'Web app to run EEG + VR experiments: guided session flow, live signal quality, VR event markers and a θ/α cognitive-load panel.',
+      es: 'App web para correr experimentos EEG + VR: flujo de sesión guiado, calidad de señal en vivo, marcadores de eventos VR y panel de carga cognitiva θ/α.',
+    },
+    year: '2026',
+    categories: ['neuro', 'xr', 'web'],
+    motif: 'eeg',
+    accent: '#4c8dff',
+    cover: vrEegStudio,
+    coverAlt: { en: 'VR EEG Studio recording screen with eight EEG channels, VR event markers and a cognitive-load index', es: 'Pantalla de grabación de VR EEG Studio con ocho canales de EEG, marcadores de eventos VR e índice de carga cognitiva' },
+    role: { en: 'Contributor · experimenter UX and signal processing (Mirai team project)', es: 'Colaborador · UX del experimentador y procesamiento de señal (proyecto del equipo de Mirai)' },
+    problem: {
+      en: 'Researchers running VR experiments had to juggle separate tools to record EEG, sync VR events and check data quality.',
+      es: 'Los investigadores que corren experimentos en VR tenían que combinar varias herramientas para grabar EEG, sincronizar eventos de VR y revisar la calidad de los datos.',
+    },
+    solution: [
+      { en: 'Step-by-step session wizard (participant → streams → recording → saved) in English, Spanish and Japanese.', es: 'Asistente de sesión paso a paso (participante → streams → grabación → guardado) en inglés, español y japonés.' },
+      { en: 'Live AURA EEG and VR markers over LSL, with per-channel signal quality, annotations and real-time filters; export to XDF.', es: 'EEG AURA y marcadores VR en vivo por LSL, con calidad de señal por canal, anotaciones y filtros en tiempo real; exportación a XDF.' },
+      { en: 'Frontal/parietal θ/α panel and trend during recording, used in the VR Vending Machine and VR Relaxation experiments.', es: 'Panel θ/α frontal/parietal con tendencia durante la grabación, usado en los experimentos VR Vending Machine y VR Relaxation.' },
+    ],
+    outcome: {
+      en: 'Being prepared for field tests in Japan and ported to a native Unity executable.',
+      es: 'En preparación para pruebas de campo en Japón y migración a un ejecutable nativo en Unity.',
+    },
+    stack: ['Python', 'LSL', 'XDF', 'JavaScript', 'AURA EEG', 'Unity'],
+    repos: [],
+  },
+  {
     slug: 'mind-controlled-robot',
     title: { en: 'Mind-Controlled Robot Arm', es: 'Brazo robótico controlado con la mente' },
     tagline: {
@@ -280,6 +335,11 @@ export const projects: Project[] = [
     featured: true,
     motif: 'interview',
     accent: '#d9588b',
+    cover: interviewDashboard,
+    coverAlt: { en: 'Applicant dashboard showing application progress: form, CV upload and AI interview completed', es: 'Panel del postulante con el progreso de la solicitud: formulario, CV y entrevista con IA completados' },
+    gallery: [
+      { src: interviewLetter, alt: { en: 'Applicant dashboard with the decision letter available', es: 'Panel del postulante con la carta de decisión disponible' }, caption: { en: 'Later stage of the applicant journey: decision letter and payment steps.', es: 'Etapa posterior del proceso: carta de decisión y pasos de pago.' } },
+    ],
     role: { en: 'Full-stack developer', es: 'Desarrollador full-stack' },
     problem: {
       en: 'Screening hundreds of applicants for international programs took weeks of manual CV reading and interviews.',

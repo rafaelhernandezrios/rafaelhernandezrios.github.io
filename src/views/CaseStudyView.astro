@@ -96,7 +96,7 @@ const ld = {
         <h2>{t(ui.projects.outcome, lang)}</h2>
         <p>{t(p.outcome, lang)}</p>
       </section>
-      <section>
+      {(p.repos.length > 0 || p.links?.length) && <section>
         <h2>{t(ui.projects.repos, lang)}</h2>
         <ul class="repos">
           {p.repos.map((r) => r.private ? (
@@ -106,7 +106,7 @@ const ld = {
           ))}
           {p.links?.map((l) => <li><a href={l.url} target="_blank" rel="noopener"><span>{t(l.label, lang)}</span><small>{l.url} ↗</small></a></li>)}
         </ul>
-      </section>
+      </section>}
     </div>
 
     <a class="next" href={localePath(`/projects/${next.slug}/`, lang)}>
