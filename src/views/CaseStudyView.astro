@@ -1,0 +1,175 @@
+---
+import { Image, getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import ProjectMedia from '../components/ProjectMedia.astro';
+import ProjectCover from '../components/ProjectCover.astro';
+import { projects, categories, type Project } from '../data/projects';
+import { person } from '../data/site';
+import { type Lang, ui, t, localePath } from '../i18n/ui';
+
+interface Props { lang: Lang; project: Project }
+const { lang, project: p } = Astro.props;
+
+const i = projects.findIndex((x) => x.slug === p.slug);
+const next = projects[(i + 1) % projects.length];
+const title = `${t(p.title, lang)} | Rafael Hernández`;
+const description = t(p.tagline, lang);
+// Low-resolution covers (e.g. GIF captures) go to the gallery instead of the hero.
+const heroImage = !!p.cover && p.cover.width >= 1000;
+const og = p.cover ? (await getImage({ src: p.cover, width: 1200, format: 'jpg' })).src : undefined;
+const ld = {
+  '@context': 'https://schema.org',
+  '@type': 'CreativeWork',
+  name: t(p.title, lang),
+  description,
+  inLanguage: lang,
+  author: { '@type': 'Person', name: person.fullName, url: Astro.site?.href },
+  keywords: p.stack.join(', '),
+  ...(p.repos.filter((r) => !r.private).length ? { codeRepository: `https://github.com/${person.githubUser}/${p.repos.find((r) => !r.private)!.name}` } : {}),
+};
+---
+<Base lang={lang} title={title} description={description} image={og} type="article" jsonLd={[ld]}>
+  <article style={p.accent ? `--accent-p:${p.accent}` : undefined}>
+    <header class="cs-head">
+      <div class="container">
+        <a class="back" href={localePath('/projects/', lang)}>{t(ui.projects.back, lang)}</a>
+        <div class="cs-head__grid">
+          <div>
+            <p class="cs-cats">{p.categories.map((c) => <span>{t(categories[c], lang)}</span>)}</p>
+            <h1>{t(p.title, lang)}</h1>
+            <p class="tagline">{t(p.tagline, lang)}</p>
+          </div>
+          <dl class="meta">
+            <div><dt>{t(ui.projects.year, lang)}</dt><dd>{p.year}</dd></div>
+            <div><dt>{t(ui.projects.role, lang)}</dt><dd>{t(p.role, lang)}</dd></div>
+            <div><dt>{t(ui.projects.stack, lang)}</dt><dd class="stack">{p.stack.map((s) => <span class="chip">{s}</span>)}</dd></div>
+          </dl>
+        </div>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="cs-media">
+        {heroImage ? (
+          <ProjectMedia project={p} lang={lang} widths={[800, 1200, 1800]} sizes="(max-width: 1200px) 100vw, 1180px" eager />
+        ) : (
+          <ProjectCover motif={p.motif} accent={p.accent} seed={p.slug} label={t(p.title, lang)} />
+        )}
+      </div>
+    </div>
+
+    <div class="container cs-body">
+      <section>
+        <h2>{t(ui.projects.problem, lang)}</h2>
+        <p class="lede">{t(p.problem, lang)}</p>
+      </section>
+      <section>
+        <h2>{t(ui.projects.solution, lang)}</h2>
+        <ol class="steps">{p.solution.map((s) => <li>{t(s, lang)}</li>)}</ol>
+      </section>
+      {p.video && (
+        <section>
+          <h2>Demo</h2>
+          <figure class="demo">
+            <video src={p.video.src} poster={p.video.poster ? (await getImage({ src: p.video.poster, width: 900 })).src : undefined} autoplay muted loop playsinline controls preload="metadata"></video>
+            <figcaption>{t(p.video.caption, lang)}</figcaption>
+          </figure>
+        </section>
+      )}
+      {p.cover && !heroImage && !p.video && (
+        <section>
+          <h2>{t(ui.projects.gallery, lang)}</h2>
+          <Image class="shot" src={p.cover} alt={p.coverAlt ? t(p.coverAlt, lang) : ''} widths={[p.cover.width]} sizes={`${p.cover.width}px`} />
+        </section>
+      )}
+      {p.gallery && (
+        <section>
+          <h2>{t(ui.projects.gallery, lang)}</h2>
+          <div class="gallery">
+            {p.gallery.map((g) => (
+              <figure><Image src={g.src} alt={t(g.alt, lang)} widths={[600, 1000]} sizes="(max-width: 900px) 100vw, 380px" />{g.caption && <figcaption>{t(g.caption, lang)}</figcaption>}</figure>
+            ))}
+          </div>
+        </section>
+      )}
+      <section class="outcome">
+        <h2>{t(ui.projects.outcome, lang)}</h2>
+        <p>{t(p.outcome, lang)}</p>
+      </section>
+      {(p.repos.length > 0 || p.links?.length) && <section>
+        <h2>{t(ui.projects.repos, lang)}</h2>
+        <ul class="repos">
+          {p.repos.map((r) => r.private ? (
+            <li class="repos__private"><span>{r.name}</span><small>{t(ui.projects.privateRepo, lang)}</small></li>
+          ) : (
+            <li><a href={`https://github.com/${person.githubUser}/${r.name}`} target="_blank" rel="noopener"><span>{r.label ? `${r.name} — ${r.label}` : r.name}</span><small>github.com/{person.githubUser}/{r.name} ↗</small></a></li>
+          ))}
+          {p.links?.map((l) => <li><a href={l.url} target="_blank" rel="noopener"><span>{t(l.label, lang)}</span><small>{l.url} ↗</small></a></li>)}
+        </ul>
+      </section>}
+    </div>
+
+    <a class="next" href={localePath(`/projects/${next.slug}/`, lang)}>
+      <div class="next__art"><ProjectCover motif={next.motif} accent={next.accent} seed={`${next.slug}-next`} /></div>
+      <div class="container next__inner">
+        <span>{t(ui.projects.next, lang)}</span>
+        <strong>{t(next.title, lang)} →</strong>
+      </div>
+    </a>
+  </article>
+</Base>
+
+<style>
+  article { --accent-p: var(--accent); }
+  .cs-head { background: var(--ink); color: #e9edf4; padding: 120px 0 7rem; }
+  .back { font-family: var(--font-mono); font-size: 0.8rem; text-decoration: none; color: var(--muted-dark); }
+  .back:hover { color: #fff; }
+  .cs-head__grid { display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 3rem; margin-top: 2rem; align-items: end; }
+  .cs-cats { display: flex; flex-wrap: wrap; gap: 0.5rem; font-family: var(--font-mono); font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--accent-p); }
+  .cs-cats span + span::before { content: '/'; margin-right: 0.5rem; opacity: 0.5; }
+  h1 { font-size: clamp(2.3rem, 5.2vw, 3.9rem); margin-top: 1rem; text-wrap: balance; }
+  .tagline { margin-top: 1.2rem; font-size: 1.15rem; color: #b9c3d3; max-width: 40rem; }
+  .meta { margin: 0; display: grid; gap: 1rem; border-left: 1px solid var(--line-dark); padding-left: 1.5rem; }
+  .meta dt { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-dark); }
+  .meta dd { margin: 0.3rem 0 0; font-size: 0.95rem; }
+  .stack { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+  .stack .chip { background: transparent; border-color: var(--line-dark); color: #c9d2e0; }
+  .cs-media { margin-top: -4.5rem; border-radius: var(--radius-lg); overflow: hidden; background: var(--ink-2); box-shadow: 0 40px 80px -50px rgba(12,20,36,0.6); }
+  .cs-media :global(img), .cs-media :global(svg) { width: 100%; max-height: 640px; object-fit: cover; aspect-ratio: 16 / 9; }
+  .cs-media :global(img.contain) { object-fit: contain; background: #fff; padding: 1.5rem; aspect-ratio: auto; }
+  .demo { margin: 0; border-radius: var(--radius); overflow: hidden; background: var(--ink); max-width: 720px; }
+  .demo video { width: 100%; }
+  .demo figcaption, .gallery figcaption { font-size: 0.85rem; color: var(--muted-dark); padding: 0.8rem 1rem; }
+  .cs-body { max-width: 780px; padding-block: 4rem 5rem; display: grid; gap: 3.2rem; }
+  .cs-body h2 { font-family: var(--font-mono); font-weight: 500; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.7rem; }
+  .cs-body h2::before { content: ''; width: 10px; height: 10px; border-radius: 3px; background: var(--accent-p); }
+  .lede { font-family: var(--font-display); font-size: clamp(1.35rem, 2.5vw, 1.75rem); line-height: 1.35; letter-spacing: -0.01em; }
+  .steps { list-style: none; counter-reset: s; padding: 0; margin: 0; display: grid; gap: 1rem; }
+  .steps li { counter-increment: s; position: relative; padding: 1.1rem 1.2rem 1.1rem 3.4rem; background: #fff; border: 1px solid var(--line); border-radius: var(--radius); font-size: 1.02rem; }
+  .steps li::before { content: counter(s, decimal-leading-zero); position: absolute; left: 1.15rem; top: 1.15rem; font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent-p); font-weight: 500; }
+  .outcome p { font-size: 1.1rem; padding: 1.4rem 1.5rem; border-radius: var(--radius); background: color-mix(in srgb, var(--accent-p) 12%, #fff); border: 1px solid color-mix(in srgb, var(--accent-p) 35%, transparent); }
+  .shot { width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--line); }
+  .gallery { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+  .gallery figure { margin: 0; }
+  .gallery img { border-radius: var(--radius); }
+  .repos { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.6rem; }
+  .repos a, .repos__private { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1rem 1.2rem; border: 1px solid var(--line); border-radius: var(--radius); text-decoration: none; background: #fff; transition: border-color 0.2s; }
+  .repos a:hover { border-color: var(--accent-p); }
+  .repos span { font-weight: 600; }
+  .repos small { font-family: var(--font-mono); font-size: 0.75rem; color: var(--muted); }
+  .repos__private { opacity: 0.7; background: transparent; border-style: dashed; }
+  .next { position: relative; display: block; color: #fff; text-decoration: none; overflow: hidden; background: var(--ink); }
+  .next__art { position: absolute; inset: 0; opacity: 0.3; transition: opacity 0.3s; }
+  .next__art :global(svg) { width: 100%; height: 100%; }
+  .next:hover .next__art { opacity: 0.45; }
+  .next::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, var(--ink) 25%, transparent); pointer-events: none; }
+  .next__inner { z-index: 1; }
+  .next__inner { position: relative; padding-block: 4.5rem; display: grid; gap: 0.6rem; }
+  .next__inner span { font-family: var(--font-mono); font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted-dark); }
+  .next__inner strong { font-family: var(--font-display); font-size: clamp(1.7rem, 4vw, 2.8rem); font-weight: 600; letter-spacing: -0.02em; }
+  @media (max-width: 860px) {
+    .cs-head__grid { grid-template-columns: 1fr; gap: 2rem; }
+    .meta { border-left: 0; padding-left: 0; border-top: 1px solid var(--line-dark); padding-top: 1.5rem; }
+    .gallery { grid-template-columns: 1fr; }
+  }
+</style>

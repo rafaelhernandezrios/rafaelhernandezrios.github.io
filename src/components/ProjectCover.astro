@@ -1,0 +1,200 @@
+---
+/**
+ * Generated cover illustration for projects without a photo/screenshot.
+ * Pure SVG, drawn at build time from the project's `motif` — no external images.
+ */
+import type { Motif } from '../data/projects';
+interface Props { motif: Motif; accent?: string; seed?: string; label?: string; class?: string }
+const { motif, accent = '#f08a7e', seed = motif, label = '', class: cls } = Astro.props;
+
+// Deterministic PRNG so every build draws the same picture.
+let h = 2166136261;
+for (const c of seed) h = Math.imul(h ^ c.charCodeAt(0), 16777619);
+const rand = () => ((h = Math.imul(h ^ (h >>> 15), 2246822507) ^ Math.imul(h ^ (h >>> 13), 3266489909)) >>> 0) / 4294967296;
+
+const W = 800, H = 500;
+const wave = (y0: number, amp: number, freq: number, phase: number, x0 = 0, x1 = W, noise = 0.35, step = 6) => {
+  let d = '';
+  for (let x = x0; x <= x1; x += step) {
+    const y = y0 + Math.sin(x * freq + phase) * amp + Math.sin(x * freq * 2.7 + phase * 1.3) * amp * 0.4 + (rand() - 0.5) * amp * noise;
+    d += `${x === x0 ? 'M' : 'L'}${x.toFixed(1)} ${y.toFixed(1)} `;
+  }
+  return d;
+};
+const id = `g-${seed.replace(/[^a-z0-9]/gi, '')}`;
+
+// Hand landmarks (MediaPipe-like topology), relative coordinates
+const hand = [[0,0],[-60,-40],[-95,-90],[-115,-135],[-130,-170],[-40,-130],[-48,-190],[-52,-230],[-55,-262],[0,-138],[2,-205],[4,-250],[6,-285],[38,-128],[48,-190],[54,-232],[58,-262],[70,-110],[92,-160],[104,-192],[114,-220]];
+const bones = [[0,1],[1,2],[2,3],[3,4],[0,5],[5,6],[6,7],[7,8],[5,9],[9,10],[10,11],[11,12],[9,13],[13,14],[14,15],[15,16],[13,17],[0,17],[17,18],[18,19],[19,20]];
+const electrodes: [string, number, number][] = [['Fp1',-55,-150],['Fp2',55,-150],['F3',-75,-70],['Fz',0,-80],['F4',75,-70],['P3',-75,70],['Pz',0,80],['P4',75,70]];
+const heat = Array.from({ length: 10 * 6 }, () => rand());
+---
+<svg class={cls} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id={`${id}-bg`} cx="70%" cy="20%" r="90%">
+      <stop offset="0" stop-color={accent} stop-opacity="0.28" />
+      <stop offset="0.55" stop-color="#131e33" stop-opacity="1" />
+      <stop offset="1" stop-color="#0c1424" />
+    </radialGradient>
+    <pattern id={`${id}-grid`} width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#fff" stroke-opacity="0.05" />
+    </pattern>
+    <linearGradient id={`${id}-fade`} x1="0" x2="1">
+      <stop offset="0" stop-color={accent} stop-opacity="0" />
+      <stop offset="0.2" stop-color={accent} stop-opacity="1" />
+      <stop offset="0.8" stop-color={accent} stop-opacity="1" />
+      <stop offset="1" stop-color={accent} stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <rect width={W} height={H} fill={`url(#${id}-bg)`} />
+  <rect width={W} height={H} fill={`url(#${id}-grid)`} />
+
+  <g fill="none" stroke={accent} stroke-linecap="round" stroke-linejoin="round">
+    {motif === 'eeg' && (
+      <g>
+        {Array.from({ length: 8 }, (_, i) => (
+          <path d={wave(70 + i * 50, 9 + (i % 3) * 4, 0.035 + i * 0.004, i * 1.7, 0, W, 0.9, 5)} stroke={`url(#${id}-fade)`} stroke-width="1.8" opacity={0.45 + (i % 4) * 0.15} />
+        ))}
+        <rect x="430" y="40" width="150" height="420" fill={accent} fill-opacity="0.07" stroke="none" />
+        <text x="440" y="62" fill={accent} stroke="none" font-family="monospace" font-size="14">θ / α ↑</text>
+      </g>
+    )}
+
+    {motif === 'surgery' && (
+      <g stroke-width="3">
+        <path d="M120 60 L370 300" /><path d="M110 70 L360 310" opacity="0.4" />
+        <path d="M690 70 L440 300" /><path d="M700 80 L450 310" opacity="0.4" />
+        <path d="M360 300 l18 12 M440 300 l-18 12" />
+        <path d="M330 330 C 370 390, 430 390, 470 330 C 500 290, 540 300, 560 340" stroke-dasharray="10 9" />
+        <ellipse cx="400" cy="345" rx="190" ry="48" opacity="0.35" stroke-width="1.5" />
+        <path d={wave(450, 10, 0.05, 1, 60, 740, 0.8, 5)} stroke-width="1.6" opacity="0.7" />
+      </g>
+    )}
+
+    {motif === 'phobia' && (
+      <g stroke-width="2.4">
+        {[60, 110, 160, 210].map((r, i) => <circle cx="400" cy="250" r={r + 40} opacity={0.5 - i * 0.1} stroke-dasharray={i % 2 ? '4 10' : 'none'} />)}
+        <rect x="290" y="200" width="220" height="110" rx="46" stroke-width="3.2" />
+        <circle cx="352" cy="255" r="26" /><circle cx="448" cy="255" r="26" />
+        <path d="M290 245 h-50 M510 245 h50" />
+        {[0, 1, 2, 3, 4].map((i) => <circle cx={400 + Math.cos(i * 1.256 - 1.57) * 230} cy={250 + Math.sin(i * 1.256 - 1.57) * 230} r="9" fill={accent} stroke="none" opacity={0.4 + i * 0.12} />)}
+      </g>
+    )}
+
+    {motif === 'relax' && (
+      <g stroke-width="2">
+        <circle cx="560" cy="170" r="70" fill={accent} fill-opacity="0.18" />
+        <circle cx="560" cy="170" r="110" opacity="0.25" />
+        {Array.from({ length: 6 }, (_, i) => <path d={wave(300 + i * 28, 14 - i, 0.012, i * 0.6, 0, W, 0.05, 8)} opacity={0.8 - i * 0.11} />)}
+      </g>
+    )}
+
+    {motif === 'aura' && (
+      <g transform="translate(400 255)" stroke-width="2.4">
+        <ellipse rx="150" ry="180" />
+        <path d="M-16 -180 L0 -205 L16 -180" />
+        <path d="M-150 -10 q-22 10 0 40 M150 -10 q22 10 0 40" />
+        <path d="M-150 0 H150 M0 -180 V180" opacity="0.18" stroke-width="1.2" />
+        {electrodes.map(([n, x, y]) => (
+          <g>
+            <circle cx={x} cy={y} r="17" fill="#0c1424" />
+            <circle cx={x} cy={y} r="6" fill={accent} stroke="none" />
+            <text x={x} y={y + 36} fill="#cfd6e3" stroke="none" font-family="monospace" font-size="13" text-anchor="middle">{n}</text>
+          </g>
+        ))}
+      </g>
+    )}
+
+    {motif === 'mindrobot' && (
+      <g stroke-width="2.6">
+        <path d="M150 330 C 120 250, 150 150, 240 135 C 320 122, 360 190, 345 250 C 340 275, 360 285, 350 300 L 330 305 L 335 345 L 260 350 L 255 390" />
+        <path d={wave(240, 8, 0.12, 0, 380, 500, 0.6, 4)} />
+        <path d="M500 240 l-16 -10 M500 240 l-16 10" />
+        <path d="M560 400 h140 M630 400 v-30" stroke-width="4" />
+        <path d="M630 370 L600 260 L690 190" stroke-width="7" />
+        <circle cx="630" cy="370" r="10" fill="#0c1424" /><circle cx="600" cy="260" r="10" fill="#0c1424" /><circle cx="690" cy="190" r="8" fill={accent} stroke="none" />
+      </g>
+    )}
+
+    {motif === 'teleop' && (
+      <g stroke-width="2.4">
+        <rect x="90" y="110" width="300" height="220" rx="14" />
+        <path d="M90 145 H390" /><circle cx="112" cy="128" r="4" fill={accent} /><circle cx="128" cy="128" r="4" fill={accent} opacity="0.6" />
+        <rect x="115" y="165" width="160" height="140" rx="6" opacity="0.6" />
+        <circle cx="335" cy="235" r="34" opacity="0.8" /><circle cx="335" cy="235" r="10" fill={accent} />
+        {[40, 70, 100].map((r) => <path d={`M ${470 - r * 0.7} ${230 - r * 0.7} A ${r} ${r} 0 0 1 ${470 + r * 0.7} ${230 - r * 0.7}`} transform="rotate(90 470 230)" opacity="0.7" />)}
+        <path d="M560 400 h170" stroke-width="4" />
+        <rect x="585" y="330" width="120" height="70" rx="12" />
+        <path d="M600 330 l-20 -60 l40 -40 M690 330 l20 -60 l-40 -40" />
+        <circle cx="645" cy="300" r="22" />
+      </g>
+    )}
+
+    {motif === 'interview' && (
+      <g stroke-width="2.4">
+        <rect x="120" y="90" width="220" height="300" rx="12" />
+        {[0, 1, 2, 3, 4, 5].map((i) => <path d={`M150 ${140 + i * 38} H${300 - (i % 3) * 40}`} opacity={i === 0 ? 1 : 0.55} stroke-width={i === 0 ? 4 : 2.4} />)}
+        {Array.from({ length: 28 }, (_, i) => { const hh = 20 + Math.abs(Math.sin(i * 0.7)) * 120 * (0.5 + rand() * 0.5); return <path d={`M${420 + i * 12} ${250 - hh / 2} V${250 + hh / 2}`} stroke-width="5" opacity={0.5 + (i % 5) * 0.1} />; })}
+      </g>
+    )}
+
+    {motif === 'hand' && (
+      <g transform="translate(400 430)" stroke-width="3">
+        {bones.map(([a, b]) => <path d={`M${hand[a][0] * 1.15} ${hand[a][1] * 1.15} L${hand[b][0] * 1.15} ${hand[b][1] * 1.15}`} />)}
+        {hand.map(([x, y]) => <circle cx={x * 1.15} cy={y * 1.15} r="7" fill="#0c1424" />)}
+        <rect x="-200" y="-370" width="400" height="390" rx="8" stroke-dasharray="12 10" opacity="0.4" />
+      </g>
+    )}
+
+    {motif === 'vision' && (
+      <g stroke-width="2.6">
+        {[[90, 90, 190, 150, '0.94'], [330, 200, 160, 200, '0.88'], [540, 80, 180, 140, '0.91'], [560, 300, 140, 130, '0.76']].map(([x, y, w, hh, s]) => (
+          <g>
+            <rect x={x} y={y} width={w} height={hh} rx="4" />
+            <rect x={x} y={(y as number) - 24} width="78" height="24" fill={accent} stroke="none" />
+            <text x={(x as number) + 8} y={(y as number) - 7} fill="#0c1424" stroke="none" font-family="monospace" font-size="14" font-weight="700">{s}</text>
+            <circle cx={(x as number) + (w as number) / 2} cy={(y as number) + (hh as number) / 2} r={Math.min(w as number, hh as number) / 4} opacity="0.35" fill={accent} stroke="none" />
+          </g>
+        ))}
+      </g>
+    )}
+
+    {motif === 'education' && (
+      <g stroke-width="2.6">
+        <path d="M120 400 H700 M200 460 V80" opacity="0.35" stroke-width="1.5" />
+        <path d="M200 400 L390 270 L560 150" stroke-width="7" />
+        <path d="M260 400 A 60 60 0 0 0 250 366" /><text x="272" y="385" fill={accent} stroke="none" font-family="monospace" font-size="18">θ₁</text>
+        <path d="M450 229 A 70 70 0 0 0 440 236" />
+        <path d="M390 270 L470 215" stroke-dasharray="6 8" opacity="0.5" />
+        <text x="460" y="262" fill={accent} stroke="none" font-family="monospace" font-size="18">θ₂</text>
+        <circle cx="200" cy="400" r="12" fill="#0c1424" /><circle cx="390" cy="270" r="11" fill="#0c1424" /><circle cx="560" cy="150" r="9" fill={accent} stroke="none" />
+        <text x="580" y="140" fill="#cfd6e3" stroke="none" font-family="monospace" font-size="15">(x, y)</text>
+      </g>
+    )}
+
+    {motif === 'cansat' && (
+      <g stroke-width="2.6">
+        <ellipse cx="400" cy="250" rx="300" ry="90" opacity="0.3" stroke-dasharray="6 10" transform="rotate(-12 400 250)" />
+        <rect x="350" y="150" width="100" height="200" rx="50" />
+        <path d="M350 200 H450 M350 300 H450" opacity="0.6" />
+        <path d="M400 150 V100" /><circle cx="400" cy="92" r="8" fill={accent} />
+        {[30, 55, 80].map((r) => <path d={`M ${400 - r} ${92 - r * 0.6} A ${r} ${r} 0 0 1 ${400 + r} ${92 - r * 0.6}`} opacity="0.6" />)}
+      </g>
+    )}
+
+    {motif === 'analytics' && (
+      <g stroke="none">
+        {heat.map((v, i) => <rect x={130 + (i % 10) * 54} y={110 + Math.floor(i / 10) * 48} width="50" height="44" rx="5" fill={accent} opacity={(0.08 + v * v * 0.8).toFixed(2)} />)}
+      </g>
+    )}
+
+    {motif === 'emg' && (
+      <g stroke-width="1.8">
+        {[0, 1, 2].map((k) => {
+          let d = ''; for (let x = 40; x <= 760; x += 3) { const burst = Math.exp(-(((x - 200 - k * 180) / 60) ** 2)) + Math.exp(-(((x - 600 + k * 40) / 45) ** 2)); d += `${x === 40 ? 'M' : 'L'}${x} ${(150 + k * 110 + (rand() - 0.5) * (6 + burst * 90)).toFixed(1)} `; }
+          return <path d={d} opacity={0.9 - k * 0.2} />;
+        })}
+      </g>
+    )}
+  </g>
+</svg>

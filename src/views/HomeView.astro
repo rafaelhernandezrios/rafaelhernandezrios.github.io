@@ -1,0 +1,231 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Hero from '../components/Hero.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import GithubGrid from '../components/GithubGrid.astro';
+import Contact from '../components/Contact.astro';
+import portrait from '../assets/photos/rafael.jpg';
+import phdFigure from '../assets/projects/phd-regional-theta-alpha.png';
+import { featuredProjects } from '../data/projects';
+import { highlights, publications, pubVenuesNote, skills } from '../data/site';
+import { type Lang, ui, t, localePath } from '../i18n/ui';
+
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+
+const title = lang === 'es'
+  ? 'Rafael Hernández | Ingeniero en Robótica y Neurotecnología'
+  : 'Rafael Hernández | Robotics Engineer & Neurotechnology Researcher';
+const description = lang === 'es'
+  ? 'Edgar Rafael Hernández Ríos — Lead Engineer en Mirai Innovation (Osaka) y doctorando en Ciencias Computacionales. Proyectos de robótica, EEG, interfaces cerebro–computadora, realidad virtual e IA.'
+  : 'Edgar Rafael Hernández Ríos — Lead Engineer at Mirai Innovation (Osaka) and PhD candidate in Computer Science. Projects in robotics, EEG, brain–computer interfaces, virtual reality and AI.';
+const [lead, ...rest] = featuredProjects;
+---
+<Base lang={lang} title={title} description={description}>
+  <Hero lang={lang} />
+
+  <!-- About -->
+  <section id="about" class="section">
+    <div class="container about">
+      <div class="about__text">
+        <p class="kicker reveal">{t(ui.about.title, lang)}</p>
+        <div class="about__body">
+          {ui.about.body[lang].map((para, i) => <p class:list={['reveal', { big: i === 0 }]}>{para}</p>)}
+        </div>
+        <dl class="facts reveal">
+          {ui.about.facts.map((f) => <div><dt>{t(f.k, lang)}</dt><dd>{t(f.v, lang)}</dd></div>)}
+        </dl>
+      </div>
+      <figure class="about__photo reveal">
+        <Image src={portrait} alt={lang === 'es' ? 'Rafael interactuando con un robot androide' : 'Rafael interacting with an android robot'} widths={[480, 800]} sizes="(max-width: 900px) 100vw, 440px" />
+      </figure>
+    </div>
+  </section>
+
+  <!-- Research -->
+  <section id="research" class="section section--dark">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">{t(ui.research.kicker, lang)}</p>
+        <h2>{t(ui.research.title, lang)}</h2>
+        <p>{t(ui.research.lead, lang)}</p>
+      </div>
+      <ol class="loop">
+        {ui.research.steps.map((s, i) => (
+          <li class="reveal" style={`transition-delay:${i * 80}ms`}>
+            <span class="loop__n">0{i + 1}</span>
+            <h3>{t(s.t, lang)}</h3>
+            <p>{t(s.d, lang)}</p>
+          </li>
+        ))}
+      </ol>
+      <div class="research__grid">
+        <figure class="figure reveal">
+          <Image src={phdFigure} alt={t(ui.research.figureCaption, lang)} widths={[640, 1040, 1600]} sizes="(max-width: 900px) 100vw, 700px" />
+          <figcaption>{t(ui.research.figureCaption, lang)}</figcaption>
+        </figure>
+        <div class="pubs reveal">
+          <h3>{t(ui.research.pubsTitle, lang)}</h3>
+          <ul>
+            {publications.map((p) => (
+              <li>
+                <span class="pubs__year">{p.year}</span>
+                <div>
+                  {p.url ? <a href={p.url} target="_blank" rel="noopener">{p.title}</a> : <strong>{p.title}</strong>}
+                  <span>{p.venue}</span>
+                  {p.authors && <span class="pubs__authors">{p.authors}</span>}
+                </div>
+              </li>
+            ))}
+          </ul>
+          <p class="pubs__note">{t(pubVenuesNote, lang)}</p>
+          <a class="btn btn--ghost" href={localePath('/projects/eeg-cognitive-load/', lang)}>{lang === 'es' ? 'Ver el proyecto de doctorado' : 'See the PhD project'} →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects" class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">{t(ui.nav.projects, lang)}</p>
+        <h2>{t(ui.projects.title, lang)}</h2>
+        <p>{t(ui.projects.lead, lang)}</p>
+      </div>
+      <div class="grid">
+        <ProjectCard project={lead} lang={lang} large />
+        {rest.map((p) => <ProjectCard project={p} lang={lang} />)}
+      </div>
+      <div class="center">
+        <a class="btn btn--dark" href={localePath('/projects/', lang)}>{t(ui.projects.all, lang)} →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Highlights -->
+  <section id="highlights" class="section section--tint">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">{t(ui.highlights.title, lang)}</p>
+        <h2>{t(ui.highlights.lead, lang)}</h2>
+      </div>
+      <ul class="hl">
+        {highlights.map((h) => (
+          <li class="reveal">
+            <Image src={h.image} alt={t(h.title, lang)} widths={[480, 800]} sizes="(max-width: 900px) 100vw, 380px" />
+            <div class="hl__body">
+              <span class="chip">{t(h.tag, lang)}</span>
+              <h3>{t(h.title, lang)}</h3>
+              <p>{t(h.text, lang)}</p>
+              <span class="hl__date">{h.date}</span>
+            </div>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Skills -->
+  <section class="section skills-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">{t(ui.skills.title, lang)}</p>
+      </div>
+      <div class="skills">
+        {skills.map((g) => (
+          <div class="reveal">
+            <h3>{t(g.group, lang)}</h3>
+            <ul>{g.items.map((s) => <li class="chip">{s}</li>)}</ul>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- GitHub -->
+  <section id="github" class="section section--dark">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">GitHub</p>
+        <h2>{t(ui.github.title, lang)}</h2>
+        <p>{t(ui.github.lead, lang)}</p>
+      </div>
+      <GithubGrid lang={lang} limit={8} />
+    </div>
+  </section>
+
+  <Contact lang={lang} />
+</Base>
+
+<style>
+  .about { display: grid; grid-template-columns: 1.3fr 0.7fr; gap: clamp(2rem, 6vw, 5rem); align-items: start; }
+  .about__body { display: grid; gap: 1.1rem; margin-top: 1.5rem; color: var(--muted); font-size: 1.05rem; }
+  .about__body .big { font-family: var(--font-display); font-size: clamp(1.3rem, 2.2vw, 1.65rem); line-height: 1.35; color: var(--text); letter-spacing: -0.01em; }
+  .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0; margin: 2.2rem 0 0; border-top: 1px solid var(--line); }
+  .facts div { padding: 1rem 1rem 1rem 0; border-bottom: 1px solid var(--line); }
+  .facts dt { font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); }
+  .facts dd { margin: 0.3rem 0 0; font-weight: 500; font-size: 0.97rem; }
+  .about__photo { margin: 0; border-radius: var(--radius-lg); overflow: hidden; position: sticky; top: 96px; }
+  .about__photo img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 30% center; }
+
+  .loop { list-style: none; padding: 0; margin: 0 0 3rem; display: grid; grid-template-columns: repeat(4, 1fr); gap: 1px; background: var(--line-dark); border: 1px solid var(--line-dark); border-radius: var(--radius-lg); overflow: hidden; }
+  .loop li { background: var(--ink); padding: 1.6rem 1.4rem 1.8rem; display: grid; gap: 0.6rem; align-content: start; position: relative; }
+  .loop li:not(:last-child)::after { content: '→'; position: absolute; right: -0.55rem; top: 1.55rem; z-index: 1; color: var(--accent); font-size: 0.9rem; background: var(--ink); line-height: 1; }
+  .loop__n { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); }
+  .loop h3 { font-size: 1.3rem; color: #fff; }
+  .loop p { color: var(--muted-dark); font-size: 0.93rem; }
+  .research__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start; }
+  .figure { margin: 0; background: #fff; border-radius: var(--radius-lg); padding: 1rem; }
+  .figure img { width: 100%; height: auto; border-radius: 8px; }
+  .figure figcaption { color: var(--muted); font-size: 0.82rem; padding: 0.8rem 0.3rem 0.2rem; }
+  .pubs { background: var(--ink-2); border: 1px solid var(--line-dark); border-radius: var(--radius-lg); padding: 1.8rem; display: grid; gap: 1.2rem; }
+  .pubs h3 { font-size: 1.2rem; color: #fff; }
+  .pubs ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
+  .pubs li { display: grid; grid-template-columns: 3.2rem 1fr; gap: 0.8rem; }
+  .pubs__year { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); padding-top: 0.15rem; }
+  .pubs li div { display: grid; gap: 0.2rem; font-size: 0.93rem; color: var(--muted-dark); }
+  .pubs strong, .pubs li a { color: #fff; font-weight: 600; }
+  .pubs__authors { font-size: 0.82rem; }
+  .pubs__note { font-size: 0.88rem; color: var(--muted-dark); }
+  .pubs .btn { justify-self: start; }
+
+  .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  .center { display: flex; justify-content: center; margin-top: 3rem; }
+  .btn--dark { background: var(--ink); color: #fff; }
+  .btn--dark:hover { background: var(--ink-3); }
+
+  .hl { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+  .hl li { background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; display: flex; flex-direction: column; }
+  .hl img { width: 100%; aspect-ratio: 16 / 10; object-fit: cover; }
+  .hl__body { padding: 1.3rem 1.4rem 1.5rem; display: grid; gap: 0.55rem; align-content: start; }
+  .hl__body .chip { justify-self: start; }
+  .hl h3 { font-size: 1.2rem; }
+  .hl p { color: var(--muted); font-size: 0.95rem; }
+  .hl__date { font-family: var(--font-mono); font-size: 0.74rem; color: var(--muted); }
+
+  .skills-section { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+  .skills-section .section-head { margin-bottom: 1.5rem; }
+  .skills { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2rem 2.5rem; }
+  .skills h3 { font-size: 1.05rem; margin-bottom: 0.8rem; }
+  .skills ul { display: flex; flex-wrap: wrap; gap: 0.45rem; list-style: none; padding: 0; margin: 0; }
+  .skills .chip { font-size: 0.78rem; color: var(--text); background: #fff; }
+
+  @media (max-width: 1000px) {
+    .grid, .hl { grid-template-columns: repeat(2, 1fr); }
+    .loop { grid-template-columns: repeat(2, 1fr); }
+    .loop li::after { display: none; }
+    .research__grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 900px) {
+    .about { grid-template-columns: 1fr; }
+    .about__photo { position: static; order: -1; }
+    .about__photo img { aspect-ratio: 16 / 10; }
+  }
+  @media (max-width: 700px) {
+    .grid, .hl, .skills { grid-template-columns: 1fr; }
+    .loop { grid-template-columns: 1fr; }
+    .facts { grid-template-columns: 1fr; }
+  }
+</style>

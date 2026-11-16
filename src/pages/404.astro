@@ -1,0 +1,23 @@
+---
+import Base from '../layouts/Base.astro';
+---
+<Base lang="en" title="404 — Page not found | Rafael Hernández" description="This page does not exist." noindex>
+  <section class="nf">
+    <div class="container">
+      <p class="kicker">404</p>
+      <h1>Signal lost.</h1>
+      <p>This page doesn’t exist (anymore). · Esta página no existe.</p>
+      <div class="ctas">
+        <a class="btn btn--primary" href="/">Home</a>
+        <a class="btn btn--ghost" href="/es/">Inicio</a>
+        <a class="btn btn--ghost" href="/projects/">Projects</a>
+      </div>
+    </div>
+  </section>
+</Base>
+<style>
+  .nf { min-height: 80vh; display: grid; align-items: center; background: var(--ink); color: #e9edf4; padding-top: 80px; }
+  h1 { font-size: clamp(3rem, 9vw, 6rem); margin: 1rem 0; }
+  p { color: var(--muted-dark); }
+  .ctas { display: flex; gap: 0.7rem; flex-wrap: wrap; margin-top: 2rem; }
+</style>

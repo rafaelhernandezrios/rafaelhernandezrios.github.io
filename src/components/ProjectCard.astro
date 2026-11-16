@@ -1,0 +1,57 @@
+---
+import ProjectMedia from './ProjectMedia.astro';
+import ProjectCover from './ProjectCover.astro';
+import { type Project, categories } from '../data/projects';
+import { type Lang, t, ui, localePath } from '../i18n/ui';
+interface Props { project: Project; lang: Lang; large?: boolean }
+const { project: p, lang, large = false } = Astro.props;
+const href = localePath(`/projects/${p.slug}/`, lang);
+---
+<article class:list={['card', 'reveal', { 'card--large': large }]} data-cats={p.categories.join(' ')} style={p.accent ? `--card-accent:${p.accent}` : undefined}>
+  <a href={href} class="card__link" aria-label={t(p.title, lang)}></a>
+  <div class="card__media">
+    {p.coverFit === 'contain'
+      ? <ProjectCover motif={p.motif} accent={p.accent} seed={p.slug} label={t(p.title, lang)} />
+      : <ProjectMedia project={p} lang={lang} sizes={large ? '(max-width: 900px) 100vw, 720px' : '(max-width: 720px) 100vw, 400px'} />}
+  </div>
+  <div class="card__body">
+    <div class="card__meta">
+      <span>{p.year}</span>
+      <span aria-hidden="true">·</span>
+      <span>{p.categories.map((c) => t(categories[c], lang)).join(' / ')}</span>
+    </div>
+    <h3>{t(p.title, lang)}</h3>
+    <p>{t(p.tagline, lang)}</p>
+    <ul class="card__stack">
+      {p.stack.slice(0, large ? 6 : 4).map((s) => <li class="chip">{s}</li>)}
+    </ul>
+    <span class="card__cta">{t(ui.projects.readCase, lang)} <span aria-hidden="true">→</span></span>
+  </div>
+</article>
+
+<style>
+  .card { --card-accent: var(--accent); position: relative; display: flex; flex-direction: column; background: #fff; border: 1px solid var(--line); border-radius: var(--radius-lg); overflow: hidden; transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s; }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 24px 50px -28px rgba(12, 20, 36, 0.45); border-color: color-mix(in srgb, var(--card-accent) 50%, transparent); }
+  .card__link { position: absolute; inset: 0; z-index: 2; }
+  .card__media { aspect-ratio: 16 / 10; overflow: hidden; background: var(--ink); }
+  .card__media :global(img), .card__media :global(svg) { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+  .card:hover .card__media :global(img), .card:hover .card__media :global(svg) { transform: scale(1.04); }
+  .card__media :global(img.contain) { object-fit: contain; background: #fff; padding: 0.75rem; }
+  .card:hover .card__media :global(img.contain) { transform: none; }
+  .card__body { display: flex; flex-direction: column; gap: 0.7rem; padding: 1.4rem 1.5rem 1.5rem; flex: 1; }
+  .card__meta { display: flex; flex-wrap: wrap; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); }
+  h3 { font-size: 1.32rem; }
+  p { color: var(--muted); font-size: 0.97rem; }
+  .card__stack { display: flex; flex-wrap: wrap; gap: 0.4rem; list-style: none; padding: 0; margin: 0.2rem 0 0; }
+  .card__cta { margin-top: auto; padding-top: 0.6rem; font-weight: 600; font-size: 0.92rem; color: var(--text); }
+  .card__cta span { display: inline-block; transition: transform 0.2s; color: var(--card-accent); }
+  .card:hover .card__cta span { transform: translateX(4px); }
+
+  @media (min-width: 900px) {
+    .card--large { flex-direction: row; grid-column: span 2; }
+    .card--large .card__media { aspect-ratio: auto; flex: 1.25; min-height: 360px; }
+    .card--large .card__body { flex: 1; padding: 2.2rem; justify-content: center; }
+    .card--large h3 { font-size: 1.85rem; }
+    .card--large p { font-size: 1.05rem; }
+  }
+</style>

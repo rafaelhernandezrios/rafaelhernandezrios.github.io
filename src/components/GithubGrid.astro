@@ -1,0 +1,91 @@
+---
+import data from '../data/github.json';
+import { excludeRepos, descriptionOverrides } from '../data/github-config';
+import { curatedRepoNames } from '../data/projects';
+import { person } from '../data/site';
+import { type Lang, ui, t } from '../i18n/ui';
+
+interface Props { lang: Lang; limit?: number; searchable?: boolean }
+const { lang, limit, searchable = false } = Astro.props;
+
+type Repo = (typeof data.repos)[number];
+const excluded = new Set(excludeRepos.map((r) => r.toLowerCase()));
+let repos: Repo[] = data.repos.filter(
+  (r) => !excluded.has(r.name.toLowerCase()) && !curatedRepoNames.has(r.name.toLowerCase()),
+);
+const total = repos.length;
+if (limit) repos = repos.slice(0, limit);
+
+const langColors: Record<string, string> = {
+  Python: '#3572A5', JavaScript: '#f1e05a', TypeScript: '#3178c6', 'C#': '#178600', 'C++': '#f34b7d',
+  C: '#555555', HTML: '#e34c26', 'Jupyter Notebook': '#DA5B0B', Vue: '#41b883',
+};
+const pretty = (name: string) => name.replace(/[-_]/g, ' ').replace(/([a-z])([A-Z])/g, '$1 $2');
+const fmt = new Intl.DateTimeFormat(lang === 'es' ? 'es-MX' : 'en-US', { month: 'short', year: 'numeric' });
+const synced = new Intl.DateTimeFormat(lang === 'es' ? 'es-MX' : 'en-US', { dateStyle: 'medium' }).format(new Date(data.generatedAt));
+---
+<div class="gh">
+  {searchable && (
+    <label class="gh__search">
+      <span class="sr-only">{t(ui.github.search, lang)}</span>
+      <input type="search" placeholder={t(ui.github.search, lang)} data-gh-search />
+    </label>
+  )}
+  <ul class="gh__grid" data-gh-grid>
+    {repos.map((r) => {
+      const desc = descriptionOverrides[r.name]?.[lang] || r.description;
+      return (
+        <li class="repo reveal" data-text={`${r.name} ${desc} ${r.language ?? ''} ${(r.topics || []).join(' ')}`.toLowerCase()}>
+          <a href={r.url} target="_blank" rel="noopener">
+            {r.image && (
+              <div class="repo__img"><img src={r.image} alt="" loading="lazy" decoding="async" onerror="this.parentElement.remove()" /></div>
+            )}
+            <div class="repo__body">
+              <h3><svg viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M2 2.5A2.5 2.5 0 0 1 4.5 0h8.75a.75.75 0 0 1 .75.75v12.5a.75.75 0 0 1-.75.75h-2.5a.75.75 0 0 1 0-1.5h1.75v-2h-8a1 1 0 0 0-.71 1.71.75.75 0 0 1-1.06 1.06A2.49 2.49 0 0 1 2 11.5Zm10.5-1h-8a1 1 0 0 0-1 1v6.71A2.5 2.5 0 0 1 4.5 9h8ZM5 12.25a.25.25 0 0 1 .25-.25h3.5a.25.25 0 0 1 .25.25v3.25a.25.25 0 0 1-.4.2l-1.45-1.087a.25.25 0 0 0-.3 0L5.4 15.7a.25.25 0 0 1-.4-.2Z"/></svg>{pretty(r.name)}</h3>
+              {desc && <p>{desc}</p>}
+              <div class="repo__meta">
+                {r.language && <span><i style={`background:${langColors[r.language] ?? '#8b949e'}`}></i>{r.language}</span>}
+                {r.stars > 0 && <span>★ {r.stars}</span>}
+                <span>{fmt.format(new Date(r.pushedAt))}</span>
+              </div>
+            </div>
+          </a>
+        </li>
+      );
+    })}
+  </ul>
+  <div class="gh__foot">
+    <span>{t(ui.github.updated, lang)}: {synced} · {total} {lang === 'es' ? 'repositorios adicionales' : 'more repositories'}</span>
+    <a class="btn btn--ghost" href={person.github} target="_blank" rel="noopener">{t(ui.github.viewAll, lang)} ↗</a>
+  </div>
+</div>
+
+{searchable && (
+  <script>
+    const input = document.querySelector<HTMLInputElement>('[data-gh-search]');
+    const items = [...document.querySelectorAll<HTMLElement>('[data-gh-grid] > li')];
+    input?.addEventListener('input', () => {
+      const q = input.value.trim().toLowerCase();
+      items.forEach((li) => { li.hidden = !!q && !li.dataset.text!.includes(q); });
+    });
+  </script>
+)}
+
+<style>
+  .gh__search input { width: 100%; max-width: 420px; padding: 0.8rem 1.1rem; border-radius: 999px; border: 1px solid var(--line-dark); background: var(--ink-2); color: #fff; font: inherit; margin-bottom: 1.75rem; }
+  .gh__search input::placeholder { color: var(--muted-dark); }
+  .gh__grid { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+  .repo a { display: flex; flex-direction: column; height: 100%; text-decoration: none; background: var(--ink-2); border: 1px solid var(--line-dark); border-radius: var(--radius); overflow: hidden; transition: border-color 0.2s, transform 0.2s, background 0.2s; }
+  .repo a:hover { border-color: rgba(240,138,126,0.55); transform: translateY(-2px); background: var(--ink-3); }
+  .repo__img { aspect-ratio: 2 / 1; overflow: hidden; background: var(--ink-3); }
+  .repo__img img { width: 100%; height: 100%; object-fit: cover; }
+  .repo__body { display: flex; flex-direction: column; gap: 0.55rem; padding: 1.1rem 1.2rem 1.15rem; flex: 1; }
+  h3 { display: flex; align-items: center; gap: 0.5rem; font-size: 1.02rem; color: #fff; letter-spacing: -0.01em; }
+  h3 svg { width: 15px; flex: none; color: var(--muted-dark); }
+  p { color: var(--muted-dark); font-size: 0.88rem; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .repo__meta { margin-top: auto; padding-top: 0.3rem; display: flex; flex-wrap: wrap; gap: 0.9rem; font-family: var(--font-mono); font-size: 0.72rem; color: var(--muted-dark); }
+  .repo__meta span { display: inline-flex; align-items: center; gap: 0.35rem; }
+  .repo__meta i { width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+  .gh__foot .btn { font-family: var(--font-sans); font-size: 0.9rem; }
+  .gh__foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 2rem; font-family: var(--font-mono); font-size: 0.76rem; color: var(--muted-dark); }
+</style>

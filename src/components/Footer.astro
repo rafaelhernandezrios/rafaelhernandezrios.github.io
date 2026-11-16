@@ -1,0 +1,26 @@
+---
+import { type Lang, ui, t } from '../i18n/ui';
+import { person } from '../data/site';
+interface Props { lang: Lang }
+const { lang } = Astro.props;
+const year = new Date().getFullYear();
+---
+<footer class="footer">
+  <div class="container footer__inner">
+    <p>© {year} {person.fullName}</p>
+    <ul>
+      <li><a href={person.github} rel="me noopener" target="_blank">GitHub</a></li>
+      <li><a href={person.linkedin} rel="me noopener" target="_blank">LinkedIn</a></li>
+      <li><a href={`mailto:${person.email}`}>Email</a></li>
+    </ul>
+    <p class="muted">{t(ui.footer.built, lang)}</p>
+  </div>
+</footer>
+<style>
+  .footer { background: var(--ink); color: var(--muted-dark); border-top: 1px solid var(--line-dark); font-size: 0.9rem; }
+  .footer__inner { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem; padding-block: 1.75rem; }
+  ul { display: flex; gap: 1.25rem; list-style: none; padding: 0; margin: 0; }
+  a { text-decoration: none; color: #dbe2ee; }
+  a:hover { color: var(--accent); }
+  .muted { font-family: var(--font-mono); font-size: 0.75rem; }
+</style>
