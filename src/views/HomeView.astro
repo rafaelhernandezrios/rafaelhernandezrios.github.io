@@ -8,7 +8,7 @@ import Contact from '../components/Contact.astro';
 import portrait from '../assets/photos/rafael.jpg';
 import phdFigure from '../assets/projects/phd-regional-theta-alpha.png';
 import { featuredProjects } from '../data/projects';
-import { highlights, publications, pubVenuesNote, skills } from '../data/site';
+import { highlights, publications, pubVenuesNote, skills, talks, talkKinds, person } from '../data/site';
 import { type Lang, ui, t, localePath } from '../i18n/ui';
 
 interface Props { lang: Lang }
@@ -65,23 +65,30 @@ const [lead, ...rest] = featuredProjects;
           <Image src={phdFigure} alt={t(ui.research.figureCaption, lang)} widths={[640, 1040, 1600]} sizes="(max-width: 900px) 100vw, 700px" />
           <figcaption>{t(ui.research.figureCaption, lang)}</figcaption>
         </figure>
-        <div class="pubs reveal">
-          <h3>{t(ui.research.pubsTitle, lang)}</h3>
-          <ul>
-            {publications.map((p) => (
-              <li>
-                <span class="pubs__year">{p.year}</span>
-                <div>
-                  {p.url ? <a href={p.url} target="_blank" rel="noopener">{p.title}</a> : <strong>{p.title}</strong>}
-                  <span>{p.venue}</span>
-                  {p.authors && <span class="pubs__authors">{p.authors}</span>}
-                </div>
-              </li>
-            ))}
-          </ul>
-          <p class="pubs__note">{t(pubVenuesNote, lang)}</p>
+        <div class="side reveal">
+          <p>{lang === 'es' ? 'El índice se calcula en ventanas de 1 s sobre EEG filtrado y se compara contra la línea base de cada persona; la componente alfa parietal es la que más impulsa el efecto.' : 'The index is computed on 1-s windows of filtered EEG and compared against each person’s own baseline; parietal alpha is the component that drives most of the effect.'}</p>
           <a class="btn btn--ghost" href={localePath('/projects/eeg-cognitive-load/', lang)}>{lang === 'es' ? 'Ver el proyecto de doctorado' : 'See the PhD project'} →</a>
+          <a class="btn btn--ghost" href={localePath('/projects/suture-trainer/', lang)}>SutureTrainer →</a>
         </div>
+      </div>
+      <div id="publications" class="pubs reveal">
+        <div class="pubs__head">
+          <h3>{t(ui.research.pubsTitle, lang)}</h3>
+          <a href={person.orcid} target="_blank" rel="noopener">ORCID ↗</a>
+        </div>
+        <ol>
+          {publications.map((p) => (
+            <li>
+              <span class="pubs__year">{p.year}</span>
+              <div>
+                {p.url ? <a class="pubs__title" href={p.url} target="_blank" rel="noopener">{p.title} <span aria-hidden="true">↗</span></a> : <span class="pubs__title">{p.title}</span>}
+                <span class="pubs__authors">{p.authors}</span>
+                <span class="pubs__venue"><span class="chip">{t(p.kind, lang)}</span> {p.venue}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p class="pubs__note">{t(pubVenuesNote, lang)}</p>
       </div>
     </div>
   </section>
@@ -124,6 +131,33 @@ const [lead, ...rest] = featuredProjects;
           </li>
         ))}
       </ul>
+    </div>
+  </section>
+
+  <!-- Talks -->
+  <section id="talks" class="section">
+    <div class="container">
+      <div class="section-head reveal">
+        <p class="kicker">{t(ui.nav.talks, lang)}</p>
+        <h2>{t(ui.talks.title, lang)}</h2>
+        <p>{t(ui.talks.lead, lang)}</p>
+      </div>
+      <ol class="talks">
+        {talks.map((k) => (
+          <li class="reveal">
+            <div class="talks__when">
+              <span>{t(k.date, lang)}</span>
+              <span class={`tag tag--${k.kind}`}>{t(talkKinds[k.kind], lang)}</span>
+            </div>
+            <div class="talks__body">
+              <h3>{t(k.title, lang)}</h3>
+              <p class="talks__where">{t(k.where, lang)}</p>
+              <p>{t(k.text, lang)}</p>
+              {k.url && <a href={k.url} target="_blank" rel="noopener">{t(ui.talks.material, lang)} ↗</a>}
+            </div>
+          </li>
+        ))}
+      </ol>
     </div>
   </section>
 
@@ -176,20 +210,40 @@ const [lead, ...rest] = featuredProjects;
   .loop__n { font-family: var(--font-mono); font-size: 0.75rem; color: var(--accent); }
   .loop h3 { font-size: 1.3rem; color: #fff; }
   .loop p { color: var(--muted-dark); font-size: 0.93rem; }
-  .research__grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 2rem; align-items: start; }
+  .research__grid { display: grid; grid-template-columns: 1.6fr 1fr; gap: 2rem; align-items: center; }
   .figure { margin: 0; background: #fff; border-radius: var(--radius-lg); padding: 1rem; }
   .figure img { width: 100%; height: auto; border-radius: 8px; }
   .figure figcaption { color: var(--muted); font-size: 0.82rem; padding: 0.8rem 0.3rem 0.2rem; }
-  .pubs { background: var(--ink-2); border: 1px solid var(--line-dark); border-radius: var(--radius-lg); padding: 1.8rem; display: grid; gap: 1.2rem; }
-  .pubs h3 { font-size: 1.2rem; color: #fff; }
-  .pubs ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 1rem; }
-  .pubs li { display: grid; grid-template-columns: 3.2rem 1fr; gap: 0.8rem; }
-  .pubs__year { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); padding-top: 0.15rem; }
-  .pubs li div { display: grid; gap: 0.2rem; font-size: 0.93rem; color: var(--muted-dark); }
-  .pubs strong, .pubs li a { color: #fff; font-weight: 600; }
-  .pubs__authors { font-size: 0.82rem; }
-  .pubs__note { font-size: 0.88rem; color: var(--muted-dark); }
-  .pubs .btn { justify-self: start; }
+  .side { display: grid; gap: 1rem; color: var(--muted-dark); font-size: 1rem; }
+  .side .btn { justify-self: start; }
+  .pubs { margin-top: 3rem; background: var(--ink-2); border: 1px solid var(--line-dark); border-radius: var(--radius-lg); padding: clamp(1.4rem, 3vw, 2.2rem); }
+  .pubs__head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; margin-bottom: 1.4rem; }
+  .pubs__head h3 { font-size: 1.4rem; color: #fff; }
+  .pubs__head a { font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent); text-decoration: none; }
+  .pubs ol { list-style: none; padding: 0; margin: 0; display: grid; }
+  .pubs li { display: grid; grid-template-columns: 3.4rem 1fr; gap: 1rem; padding: 1rem 0; border-top: 1px solid var(--line-dark); }
+  .pubs__year { font-family: var(--font-mono); font-size: 0.82rem; color: var(--accent); padding-top: 0.15rem; }
+  .pubs li div { display: grid; gap: 0.3rem; }
+  .pubs__title { color: #fff; font-weight: 600; font-size: 1rem; text-decoration: none; line-height: 1.4; }
+  a.pubs__title:hover { color: var(--accent); }
+  .pubs__title span { color: var(--muted-dark); font-weight: 400; }
+  .pubs__authors { font-size: 0.86rem; color: var(--muted-dark); }
+  .pubs__venue { font-size: 0.86rem; color: #c9d2e0; display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem; }
+  .pubs__note { font-size: 0.86rem; color: var(--muted-dark); margin-top: 1rem; }
+
+  .talks { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--line); }
+  .talks li { display: grid; grid-template-columns: 11rem 1fr; gap: 2rem; padding: 1.6rem 0; border-bottom: 1px solid var(--line); }
+  .talks__when { display: grid; gap: 0.6rem; align-content: start; font-family: var(--font-mono); font-size: 0.8rem; color: var(--muted); }
+  .tag { justify-self: start; font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; padding: 0.25rem 0.55rem; border-radius: 999px; color: var(--ink); }
+  .tag--talk { background: #ffd9d3; }
+  .tag--workshop { background: #cdeee9; }
+  .tag--program { background: #e2dcff; }
+  .tag--training { background: #fde7c4; }
+  .talks__body { display: grid; gap: 0.45rem; max-width: 46rem; }
+  .talks__body h3 { font-size: 1.25rem; }
+  .talks__where { font-weight: 500; color: var(--text) !important; font-size: 0.95rem; }
+  .talks__body p { color: var(--muted); font-size: 0.97rem; }
+  .talks__body a { justify-self: start; font-weight: 600; font-size: 0.9rem; color: var(--accent-2); text-decoration: none; }
 
   .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
   .center { display: flex; justify-content: center; margin-top: 3rem; }
@@ -217,6 +271,7 @@ const [lead, ...rest] = featuredProjects;
     .loop { grid-template-columns: repeat(2, 1fr); }
     .loop li::after { display: none; }
     .research__grid { grid-template-columns: 1fr; }
+    .talks li { grid-template-columns: 1fr; gap: 0.8rem; }
   }
   @media (max-width: 900px) {
     .about { grid-template-columns: 1fr; }
