@@ -24,6 +24,8 @@ export const ui = {
     research: { en: 'Research', es: 'Investigación' },
     projects: { en: 'Projects', es: 'Proyectos' },
     highlights: { en: 'Highlights', es: 'Logros' },
+    talks: { en: 'Talks', es: 'Charlas' },
+    publications: { en: 'Publications', es: 'Publicaciones' },
     contact: { en: 'Contact', es: 'Contacto' },
   },
   hero: {
@@ -77,7 +79,7 @@ export const ui = {
       en: 'Regional θ/α across baseline and task conditions (N = 7). From the PHD repository.',
       es: 'θ/α regional en condiciones de línea base y tarea (N = 7). Del repositorio PHD.',
     },
-    pubsTitle: { en: 'Selected publications & talks', es: 'Publicaciones y charlas' },
+    pubsTitle: { en: 'Publications', es: 'Publicaciones' },
   },
   projects: {
     title: { en: 'Featured projects', es: 'Proyectos destacados' },
@@ -113,6 +115,11 @@ export const ui = {
   highlights: {
     title: { en: 'Highlights', es: 'Logros' },
     lead: { en: 'Exhibitions, awards and programs along the way.', es: 'Exhibiciones, premios y programas en el camino.' },
+  },
+  talks: {
+    title: { en: 'Talks & workshops', es: 'Charlas y talleres' },
+    lead: { en: 'Teaching is half of what I do: hands-on workshops, talks and programs for students and teachers.', es: 'Enseñar es la mitad de lo que hago: talleres prácticos, charlas y programas para estudiantes y docentes.' },
+    material: { en: 'Material', es: 'Material' },
   },
   skills: { title: { en: 'Toolbox', es: 'Herramientas' } },
   contact: {

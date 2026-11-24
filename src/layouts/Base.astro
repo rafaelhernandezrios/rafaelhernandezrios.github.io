@@ -32,7 +32,7 @@ const personLd = {
   url: site.href,
   image: new URL('/og-image.png', site).href,
   email: `mailto:${person.email}`,
-  sameAs: [person.linkedin, person.github],
+  sameAs: [person.linkedin, person.github, person.orcid],
   worksFor: { '@type': 'Organization', name: person.org, url: person.orgUrl },
   address: { '@type': 'PostalAddress', addressLocality: 'Osaka', addressCountry: 'JP' },
   knowsAbout: ['Robotics', 'Neurotechnology', 'EEG', 'Brain-computer interfaces', 'Virtual reality', 'Teleoperation', 'Artificial intelligence'],

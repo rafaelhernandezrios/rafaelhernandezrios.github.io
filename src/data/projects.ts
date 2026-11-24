@@ -317,11 +317,12 @@ export const projects: Project[] = [
       { en: 'Per-robot control interfaces with live video, movement and speech for a SoftBank Pepper (NAOqi) and a Unitree Go2 quadruped.', es: 'Interfaces de control por robot con video en vivo, movimiento y voz para un Pepper de SoftBank (NAOqi) y un cuadrúpedo Unitree Go2.' },
     ],
     outcome: {
-      en: 'Built for remote robotics programs with international students.',
-      es: 'Hecha para programas remotos de robótica con estudiantes internacionales.',
+      en: 'Built for remote robotics programs with international students; published at IEEE/SICE SII 2026.',
+      es: 'Hecha para programas remotos de robótica con estudiantes internacionales; publicada en IEEE/SICE SII 2026.',
     },
     stack: ['Node.js', 'Express', 'MongoDB', 'WebRTC', 'ROS', 'NAOqi', 'Python'],
     repos: [{ name: 'teleoperacion-sii' }, { name: 'teleoperation-IKAN' }, { name: 'PepperControlWeb', private: true }],
+    links: [{ label: { en: 'Paper — IEEE/SICE SII 2026', es: 'Artículo — IEEE/SICE SII 2026' }, url: 'https://doi.org/10.1109/SII64115.2026.11404473' }],
   },
   {
     slug: 'ai-interview-platform',
